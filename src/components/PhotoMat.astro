@@ -1,0 +1,191 @@
+---
+/**
+ * The HEKLA cut.
+ *
+ * Every published image sits on a white mat with its bottom edge sliced at
+ * the 10 degree slant, rising to the right, and an italic H monogram stamped
+ * top left. This component is the only place that treatment is implemented.
+ *
+ * It takes either a still (optimised by astro:assets) or a motion clip
+ * (mp4 + webm + poster, produced from the GIF master by `npm run media`).
+ * Motion never autoplays: the clip starts when it scrolls into view and only
+ * if the visitor has not asked for reduced motion, in which case the poster
+ * frame stands in as a still.
+ */
+import { Image } from 'astro:assets';
+import type { Media } from '../data/products';
+
+interface Props {
+  media: Media;
+  /** Controls the mat padding and the image height. */
+  variant?: 'default' | 'card' | 'band' | 'about' | 'step' | 'float';
+  /** Fallback when the media entry does not declare its own monogram. */
+  monogram?: 'ink' | 'paper';
+  /** Set eager only for an image above the fold. */
+  loading?: 'lazy' | 'eager';
+  caption?: string;
+  class?: string;
+}
+
+const {
+  media,
+  variant = 'default',
+  monogram: monogramFallback = 'ink',
+  loading = 'lazy',
+  caption,
+  class: className = '',
+} = Astro.props;
+
+const isMotion = media.kind === 'motion';
+/* The media entry knows whether its own top-left corner is dark. */
+const monogram = media.monogram ?? monogramFallback;
+
+/**
+ * How wide this image is actually painted, per variant. Without this every
+ * mat claims the full column and the browser downloads a 720px file for a
+ * 150px polaroid.
+ */
+const RENDERED: Record<
+  NonNullable<Props['variant']>,
+  { widths: number[]; sizes: string; quality: number }
+> = {
+  default: { widths: [560, 900, 1160], sizes: '(max-width: 1200px) 100vw, 1136px', quality: 76 },
+  card: { widths: [360, 560, 760], sizes: '(max-width: 760px) 88vw, (max-width: 1024px) 46vw, 360px', quality: 68 },
+  band: { widths: [720, 1160], sizes: '(max-width: 1200px) 100vw, 1136px', quality: 68 },
+  about: { widths: [360, 560, 760], sizes: '(max-width: 1024px) 100vw, 380px', quality: 72 },
+  step: { widths: [360, 560, 760], sizes: '(max-width: 1024px) 100vw, 360px', quality: 70 },
+  float: { widths: [160, 320], sizes: '(max-width: 1024px) 33vw, 160px', quality: 68 },
+};
+
+/* Grainy night photography is expensive in WebP, and these are painted small.
+   Quality is set per variant rather than globally for that reason. */
+const { widths, sizes, quality } = RENDERED[variant];
+---
+
+<figure class:list={['mat', `mat--${variant}`, `mat--${monogram}`, className]}>
+  {
+    isMotion ? (
+      <video
+        class="mat__media"
+        poster={`/media/${media.name}.jpg`}
+        preload="none"
+        muted
+        loop
+        playsinline
+        disablepictureinpicture
+        aria-label={media.alt}
+        data-motion
+      >
+        <source src={`/media/${media.name}.webm`} type="video/webm" />
+        <source src={`/media/${media.name}.mp4`} type="video/mp4" />
+      </video>
+    ) : (
+      <Image
+        class="mat__media"
+        src={media.src}
+        alt={media.alt}
+        loading={loading}
+        decoding="async"
+        widths={widths}
+        sizes={sizes}
+        quality={quality}
+        {...{ width: Math.min(media.src.width, Math.max(...widths)) }}
+      />
+    )
+  }
+  <span class="mat__monogram" aria-hidden="true">H</span>
+  {caption && <figcaption class="mat__caption">{caption}</figcaption>}
+</figure>
+
+<style>
+  .mat {
+    position: relative;
+    background: var(--white);
+    padding: 10px 10px 26px;
+    margin: 0;
+    /* Each variant only has to override this one number. */
+    --mat-h: 280px;
+  }
+
+  .mat__media {
+    display: block;
+    width: 100%;
+    height: var(--mat-h);
+    object-fit: cover;
+    /* The cut: bottom edge sliced at the slant, rising to the right. */
+    clip-path: var(--photo-cut);
+    background: var(--smoke);
+  }
+
+  /* The italic H stamp. Paper on dark images, black on light. */
+  .mat__monogram {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 2;
+    font-weight: var(--w-mark);
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    font-size: 15px;
+    line-height: 1;
+  }
+
+  .mat--ink .mat__monogram {
+    color: var(--black);
+  }
+
+  .mat--paper .mat__monogram {
+    color: var(--paper);
+  }
+
+  .mat__caption {
+    font-size: 12px;
+    color: var(--ash);
+    margin-top: 10px;
+    text-align: center;
+  }
+
+  /* Card photo. Sits inside a product card, above the name. */
+  .mat--card {
+    padding: 8px 8px 18px;
+    --mat-h: 190px;
+  }
+
+  /* Full width band at the top of a product page. */
+  .mat--band {
+    padding: 12px 12px 30px;
+    --mat-h: 360px;
+  }
+
+  /* The about column. Taller, portrait-ish. */
+  .mat--about {
+    --mat-h: 320px;
+  }
+
+  /* Inside a numbered step on the dark band. */
+  .mat--step {
+    padding: 0;
+    background: transparent;
+    margin: 18px 0 20px;
+    --mat-h: 150px;
+  }
+
+  .mat--step .mat__monogram {
+    top: 12px;
+    left: 12px;
+  }
+
+  /* The loose polaroids floating beside the front page headline. */
+  .mat--float {
+    padding: 8px 8px 18px;
+    box-shadow: 0 14px 34px rgb(11 11 11 / 16%);
+    --mat-h: 110px;
+  }
+
+  @media (max-width: 760px) {
+    .mat--band {
+      --mat-h: 220px;
+    }
+  }
+</style>

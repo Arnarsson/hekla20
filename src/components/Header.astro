@@ -1,0 +1,113 @@
+---
+/**
+ * The masthead. Sticky, paper ground, one hairline under it.
+ *
+ * On the front page the wordmark is a jump back to the top; everywhere else
+ * it is the way home, so the label changes with it.
+ */
+import { nav, primaryCta } from '../data/site';
+
+interface Props {
+  /** True on the front page, where the nav links are in-page anchors. */
+  isHome?: boolean;
+}
+
+const { isHome = false } = Astro.props;
+const markHref = isHome ? '#top' : '/';
+const markLabel = isHome ? 'HEKLA, back to top' : 'HEKLA, back to the front page';
+---
+
+<header class="site-header">
+  <div class="wrap site-header__inner">
+    <a href={markHref} class="wordmark" aria-label={markLabel}>HEKLA</a>
+
+    <nav aria-label="Main">
+      <ul class="site-nav">
+        {nav.map((item) => (
+          <li><a href={item.href}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+
+    <a href={primaryCta.href} class="btn btn--ink site-header__cta">{primaryCta.label}</a>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: var(--paper);
+    border-bottom: 1px solid var(--smoke);
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 64px;
+  }
+
+  .site-nav {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    list-style: none;
+  }
+
+  .site-nav a {
+    font-weight: var(--w-structure);
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  .site-nav a:hover {
+    color: var(--ash);
+  }
+
+  .site-header__cta {
+    padding: 10px 18px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  /* Under 768px the nav drops to its own row and scrolls sideways rather
+     than disappearing, which is what the handoff did on every page. */
+  @media (max-width: 768px) {
+    .site-header__inner {
+      flex-wrap: wrap;
+      row-gap: 10px;
+      padding-block: 10px;
+    }
+
+    .site-header nav {
+      order: 3;
+      flex-basis: 100%;
+    }
+
+    .site-nav {
+      gap: 20px;
+      overflow-x: auto;
+      border-top: 1px solid var(--smoke);
+      padding-top: 9px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .site-nav::-webkit-scrollbar {
+      display: none;
+    }
+
+    .site-nav a {
+      white-space: nowrap;
+      font-size: 13px;
+    }
+
+    .site-header__cta {
+      font-size: 12px;
+      padding: 9px 12px;
+    }
+  }
+</style>

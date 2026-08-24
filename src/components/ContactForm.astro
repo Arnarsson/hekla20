@@ -1,0 +1,113 @@
+---
+/**
+ * The contact form.
+ *
+ * Set PUBLIC_FORM_ENDPOINT in the environment and the form POSTs JSON there.
+ * Leave it unset and the form opens the visitor's mail client with every
+ * field filled in, rather than pretending to submit into nothing.
+ */
+import { site } from '../data/site';
+---
+
+<form class="form" data-contact-form data-mailto={site.email} novalidate>
+  <div class="form__field">
+    <label for="f-name">Name</label>
+    <input type="text" id="f-name" name="name" autocomplete="name" required />
+  </div>
+
+  <div class="form__field">
+    <label for="f-email">Email</label>
+    <input type="email" id="f-email" name="email" autocomplete="email" required />
+  </div>
+
+  <div class="form__field">
+    <label for="f-company">Company</label>
+    <input type="text" id="f-company" name="company" autocomplete="organization" />
+  </div>
+
+  <div class="form__field">
+    <label for="f-message">What is eating your team's time?</label>
+    <textarea id="f-message" name="message" rows="5"></textarea>
+  </div>
+
+  <button type="submit" class="btn btn--ink">&rarr; Send</button>
+
+  <p class="form__message" data-form-message role="status" aria-live="polite"></p>
+  <p class="form__note">You will hear back within one working day.</p>
+</form>
+
+<script>
+  import { initContactForm } from '../scripts/contact-form';
+  /* PUBLIC_ variables are inlined into the client bundle at build time. */
+  initContactForm(import.meta.env.PUBLIC_FORM_ENDPOINT ?? '');
+</script>
+
+<style>
+  .form__field {
+    margin-bottom: 18px;
+  }
+
+  .form label {
+    display: block;
+    font-weight: var(--w-structure);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: var(--track-label);
+    color: var(--ash);
+    margin-bottom: 6px;
+  }
+
+  .form input,
+  .form textarea {
+    width: 100%;
+    font-size: 15px;
+    padding: 12px 14px;
+    min-height: 44px;
+    background: var(--white);
+    /* Darker than --smoke so the field edge clears 3:1 against paper. */
+    border: 1px solid var(--field-border);
+    color: var(--black);
+  }
+
+  .form input:hover,
+  .form textarea:hover {
+    border-color: var(--black);
+  }
+
+  .form input:focus,
+  .form textarea:focus {
+    border-color: var(--violet);
+    outline: 2px solid var(--violet);
+    outline-offset: 1px;
+  }
+
+  .form textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .form__message {
+    margin-top: 14px;
+    font-size: 14px;
+    display: none;
+  }
+
+  .form__message.is-shown {
+    display: block;
+  }
+
+  .form__message--ok {
+    font-weight: var(--w-structure);
+  }
+
+  .form__message--err {
+    font-weight: var(--w-structure);
+    color: var(--violet);
+  }
+
+  .form__note {
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--ash);
+  }
+</style>

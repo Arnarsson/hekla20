@@ -1,0 +1,242 @@
+/* ---------------------------------------------------------------------------
+   Shared classes. Only patterns used by three or more components live here;
+   anything used by exactly one component belongs in that component's own
+   scoped <style> block.
+   --------------------------------------------------------------------------- */
+
+/* --- Layout ------------------------------------------------------------- */
+
+.wrap {
+  max-width: var(--max);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+section {
+  padding: 88px 0;
+}
+
+@media (max-width: 768px) {
+  section {
+    padding: 64px 0;
+  }
+}
+
+/* --- Marks -------------------------------------------------------------- */
+
+/* 900 Black Italic uppercase is locked to wordmarks. It never sets a sentence. */
+.brandname,
+.wordmark {
+  font-weight: var(--w-mark);
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: var(--track-mark);
+}
+
+.wordmark {
+  font-size: 26px;
+  text-decoration: none;
+  color: var(--violet);
+}
+
+.wordmark--ink {
+  color: var(--black);
+}
+
+/* Inline emphasis inside a display headline. 900 Black, upright, violet. */
+.erupt {
+  color: var(--violet);
+  font-weight: var(--w-mark);
+  font-style: normal;
+}
+
+/* The skewed tick. A structural device, not a bullet. */
+.tick {
+  display: inline-block;
+  width: 12px;
+  height: 16px;
+  background: var(--black);
+  transform: skewX(var(--slant));
+  flex: none;
+}
+
+.band-dark .tick {
+  background: var(--paper);
+}
+
+/* --- Labels ------------------------------------------------------------- */
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: var(--w-structure);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: var(--track-label);
+  color: var(--ash);
+}
+
+.band-dark .label {
+  color: var(--smoke);
+}
+
+/* --- Buttons ------------------------------------------------------------ */
+
+.btn {
+  display: inline-block;
+  font-weight: var(--w-structure);
+  font-size: 15px;
+  text-decoration: none;
+  padding: 14px 26px;
+  min-height: 44px;
+  border: 1px solid var(--black);
+  color: var(--black);
+  background: transparent;
+  cursor: pointer;
+  transition: background var(--t-base), color var(--t-base), border-color var(--t-base);
+}
+
+.btn:hover {
+  background: var(--black);
+  color: var(--paper);
+}
+
+.btn--primary {
+  background: var(--violet);
+  border-color: var(--violet);
+  color: var(--white);
+}
+
+.btn--primary:hover {
+  background: var(--black);
+  border-color: var(--black);
+  color: var(--white);
+}
+
+/* On the dark band, inverting to black would vanish. Invert to paper. */
+.band-dark .btn--primary:hover {
+  background: var(--paper);
+  border-color: var(--paper);
+  color: var(--black);
+}
+
+.btn--ink {
+  background: var(--black);
+  border-color: var(--black);
+  color: var(--paper);
+}
+
+.btn--ink:hover {
+  background: transparent;
+  color: var(--black);
+}
+
+.btn:active {
+  opacity: 0.85;
+}
+
+/* --- Status chips ------------------------------------------------------- */
+
+.status {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  gap: 7px;
+  font-weight: var(--w-structure);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 11px;
+  line-height: 1.4;
+}
+
+.status--live {
+  background: var(--black);
+  color: var(--white);
+}
+
+.status--new {
+  background: var(--violet);
+  color: var(--white);
+}
+
+.status--scoped {
+  border: 1px solid var(--ash);
+  color: var(--ash);
+}
+
+.status--internal {
+  border: 1px solid var(--black);
+  color: var(--black);
+}
+
+/* The live dot. Moss, once per screen, never as a text colour. */
+.status__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--moss);
+  flex: none;
+}
+
+/* A price, cut at the slant. The inner span un-skews so the digits stay upright. */
+.price-chip {
+  display: inline-block;
+  background: var(--black);
+  color: var(--paper);
+  font-weight: var(--w-structure);
+  font-size: 14px;
+  padding: 7px 14px;
+  transform: skewX(var(--slant));
+}
+
+.price-chip > span {
+  display: inline-block;
+  transform: skewX(calc(-1 * var(--slant)));
+}
+
+/* --- The dark band ------------------------------------------------------ */
+
+/* Black ground entered through a slanted cut in the top edge. */
+.band-dark {
+  background: var(--black);
+  color: var(--paper);
+  clip-path: polygon(0 44px, 260px 0, 100% 0, 100% 100%, 0 100%);
+  padding: 110px 0 80px;
+}
+
+.band-dark h2 {
+  font-weight: var(--w-display);
+  letter-spacing: var(--track-display);
+  font-size: clamp(28px, 3.6vw, 44px);
+  line-height: 1.15;
+  margin-bottom: 24px;
+  color: var(--paper);
+}
+
+@media (max-width: 768px) {
+  .band-dark {
+    clip-path: polygon(0 30px, 172px 0, 100% 0, 100% 100%, 0 100%);
+    padding: 88px 0 64px;
+  }
+}
+
+/* --- Section heads ------------------------------------------------------ */
+
+.section-head {
+  margin-bottom: 40px;
+}
+
+.section-head h2 {
+  font-weight: var(--w-structure);
+  font-size: clamp(26px, 3vw, 36px);
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+  margin: 14px 0 10px;
+}
+
+.section-head p {
+  color: var(--ash);
+  font-size: 16px;
+}

@@ -1,0 +1,150 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+
+const updated = '24 August 2026';
+---
+
+<BaseLayout
+  title="Privacy policy"
+  description="HEKLA sets no cookies, runs no analytics and loads no trackers. The only personal data we receive is what you type into the contact form or send us directly."
+>
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="crumbs">
+        <a href="/">&larr; Front page</a>
+        <span class="label"><span class="tick" aria-hidden="true"></span>Privacy</span>
+      </p>
+      <h1>Privacy <span class="erupt">policy</span></h1>
+      <p class="lead">
+        Short version: this site sets no cookies, runs no analytics and loads no trackers. The only
+        personal data we receive is what you type into the contact form or send us directly.
+      </p>
+    </div>
+  </section>
+
+  <section class="prose">
+    <div class="wrap">
+      <h2>Who is responsible</h2>
+      <p>
+        The data controller is {site.legalName}, trading as {site.name}, CVR {site.cvr}, {site.address.city},
+        {site.address.country}. Registered at {site.address.street}, {site.address.postal}.
+      </p>
+      <p>Questions about your data: <a href={`mailto:${site.email}`}>{site.email}</a>.</p>
+
+      <h2>What we collect and why</h2>
+      <p>
+        When you use the contact form, we receive your name, email address, company name and your
+        message. We use it for one thing: answering your enquiry and, if you want, arranging a
+        conversation. The legal basis is our legitimate interest in responding to people who contact
+        us, under GDPR article 6(1)(f).
+      </p>
+      <p>If you email or call us directly, we handle that correspondence the same way.</p>
+
+      <h2>What we do not collect</h2>
+      <ul>
+        <li>No cookies, of any kind.</li>
+        <li>No analytics or visitor tracking.</li>
+        <li>No advertising pixels or third party trackers.</li>
+      </ul>
+      <p>
+        The site loads the Inter typeface from Google Fonts, which means your browser sends a
+        standard font request to Google when the page loads. If we later self host the fonts, this
+        section gets shorter.
+      </p>
+
+      <h2>How long we keep it</h2>
+      <p>
+        We keep enquiry correspondence for as long as the dialogue is active, and delete it no later
+        than 12 months after the last contact, unless it becomes part of a client engagement with its
+        own agreement.
+      </p>
+
+      <h2>Who we share it with</h2>
+      <p>
+        Nobody, for marketing. Your enquiry may pass through our email provider and, if the contact
+        form is connected, a form processing service. Today that is our email host only. If we add a
+        form processing service, it is named here before it goes live.
+      </p>
+
+      <h2>Your rights</h2>
+      <p>
+        Under GDPR you can ask for access to the data we hold about you, ask us to correct it or
+        delete it, and object to our processing. Write to
+        <a href={`mailto:${site.email}`}>{site.email}</a> and we will handle it within a month. You can
+        also complain to Datatilsynet, the Danish Data Protection Agency, at
+        <a href="https://www.datatilsynet.dk" rel="noopener">datatilsynet.dk</a>.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        If this policy changes, the new version is published here with a new date. This version:
+        {updated}.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 72px 0 40px;
+  }
+
+  .crumbs {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    max-width: none;
+  }
+
+  .crumbs a {
+    font-weight: var(--w-structure);
+    font-size: 13px;
+    text-decoration: none;
+    color: var(--ash);
+  }
+
+  .crumbs a:hover {
+    color: var(--black);
+  }
+
+  .page-hero h1 {
+    font-weight: var(--w-display);
+    letter-spacing: var(--track-display);
+    font-size: clamp(38px, 5.6vw, 68px);
+    line-height: 1.08;
+    margin: 8px 0 22px;
+  }
+
+  .page-hero .lead {
+    font-size: 18px;
+  }
+
+  .prose {
+    padding: 24px 0 88px;
+  }
+
+  .prose h2 {
+    font-weight: var(--w-structure);
+    font-size: 20px;
+    margin: 36px 0 10px;
+  }
+
+  .prose p,
+  .prose li {
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  .prose ul {
+    padding-left: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .page-hero {
+      padding: 56px 0 32px;
+    }
+  }
+</style>

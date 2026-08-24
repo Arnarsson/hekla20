@@ -1,0 +1,152 @@
+/* ---------------------------------------------------------------------------
+   Reset, element defaults, accessibility and print.
+   --------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* The masthead is sticky, so anchor targets must clear it. */
+  scroll-padding-top: 84px;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-weight: var(--w-body);
+  font-size: 16px;
+  line-height: 1.6;
+  background: var(--paper);
+  color: var(--black);
+  -webkit-font-smoothing: antialiased;
+  /* The ticker is fixed to the bottom; keep it off the last line of content. */
+  padding-bottom: var(--ticker-h);
+}
+
+a {
+  color: inherit;
+}
+
+img,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+p {
+  max-width: var(--measure);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* Visible focus, always. Two pixels of black on paper, paper on the dark band. */
+:focus-visible {
+  outline: 2px solid var(--black);
+  outline-offset: 3px;
+}
+
+.band-dark :focus-visible {
+  outline-color: var(--paper);
+}
+
+/* For content that must exist for screen readers but not be painted. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Skip link. Hidden until focused, then pinned top left over the masthead. */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  transform: translateY(-120%);
+  background: var(--black);
+  color: var(--paper);
+  font-weight: var(--w-structure);
+  font-size: 14px;
+  padding: 12px 18px;
+  text-decoration: none;
+  transition: transform var(--t-fast) var(--ease);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* Scroll reveal. Content is visible by default and the hidden state is only
+   ever applied by JavaScript, so a script failure can never hide a section. */
+[data-reveal] {
+  transition: opacity var(--t-base) ease-out, transform var(--t-base) ease-out;
+}
+
+[data-reveal].is-pending {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Reduced motion. Nothing animates, nothing transitions, nothing auto-scrolls. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Print. Reveal every section, unpin the fixed chrome, drop the decoration. */
+@media print {
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .site-header,
+  .tickers,
+  .hero-photos {
+    position: static !important;
+  }
+
+  .tickers,
+  .hero-photos {
+    display: none !important;
+  }
+
+  body {
+    padding-bottom: 0;
+  }
+
+  section {
+    break-inside: avoid;
+  }
+}

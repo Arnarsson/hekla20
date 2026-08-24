@@ -1,0 +1,7 @@
+/* Single stylesheet entry point. Imported once, by BaseLayout.
+   Order matters: tokens define the variables, base resets and sets element
+   defaults, utilities layer shared classes on top. Component styles are
+   scoped inside their own .astro files and are not imported here. */
+@import "./tokens.css";
+@import "./base.css";
+@import "./utilities.css";

@@ -1,0 +1,167 @@
+---
+/**
+ * One card in the front page rail. White surface, hairline border, no shadow
+ * and no lift on hover: the border simply darkens.
+ */
+import PhotoMat from './PhotoMat.astro';
+import { railPosition, type Product } from '../data/products';
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const href = product.page ? `/${product.slug}` : '/#contact';
+const position = railPosition(product.slug);
+---
+
+<article class="card">
+  <a class="card__num" href={href}>{position}</a>
+
+  <PhotoMat media={product.card} variant="card" />
+
+  <h3 class:list={['card__name', product.isWordmark ? 'brandname' : 'card__name--caps']}>
+    {product.name}
+  </h3>
+
+  <span class:list={['status', `status--${product.status.kind}`]}>
+    {product.status.kind === 'live' && <span class="status__dot" aria-hidden="true" />}
+    {product.status.label}
+  </span>
+
+  <p class="card__oneliner">{product.oneliner}</p>
+
+  <ul class="card__list">
+    {product.bullets.map((bullet) => <li>{bullet}</li>)}
+  </ul>
+
+  {product.closing && <p class="card__closing">{product.closing}</p>}
+
+  <div class="card__foot">
+    {product.price && <span class="card__price">{product.price}</span>}
+    <a href="/#contact" class="card__link">&rarr; Book a conversation</a>
+    {
+      product.page && (
+        <a href={`/${product.slug}`} class="card__more">
+          Read more about {product.name} &rarr;
+        </a>
+      )
+    }
+  </div>
+</article>
+
+<style>
+  .card {
+    background: var(--white);
+    border: 1px solid var(--smoke);
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    transition: border-color var(--t-base);
+  }
+
+  .card:hover {
+    border-color: var(--black);
+  }
+
+  .card__num {
+    font-weight: var(--w-structure);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: var(--track-label);
+    color: var(--ash);
+    text-decoration: none;
+    align-self: flex-start;
+    border-bottom: 1px solid var(--smoke);
+    margin-bottom: 18px;
+  }
+
+  .card__num:hover {
+    color: var(--violet);
+    border-bottom-color: var(--violet);
+  }
+
+  .card__name {
+    font-size: 20px;
+    line-height: 1.2;
+    margin: 16px 0 10px;
+  }
+
+  /* Non-wordmark product names still set in caps, but upright and semibold:
+     900 Black Italic is reserved for wordmarks and never sets a plain name. */
+  .card__name--caps {
+    text-transform: uppercase;
+    font-weight: var(--w-structure);
+    letter-spacing: 0.02em;
+  }
+
+  .card__name.brandname {
+    font-size: 21px;
+  }
+
+  .status {
+    margin: 0 0 14px;
+  }
+
+  .card__oneliner {
+    font-size: 15px;
+    margin-bottom: 16px;
+  }
+
+  .card__list {
+    list-style: none;
+    margin-bottom: 18px;
+  }
+
+  .card__list li {
+    font-size: 14px;
+    padding: 5px 0;
+    border-top: 1px solid var(--smoke);
+  }
+
+  .card__list li:first-child {
+    border-top: none;
+  }
+
+  .card__closing {
+    font-size: 14px;
+    color: var(--ash);
+    margin-bottom: 16px;
+  }
+
+  .card__foot {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    align-items: center;
+  }
+
+  .card__price {
+    font-weight: var(--w-structure);
+    font-size: 14px;
+    flex-basis: 100%;
+  }
+
+  .card__link {
+    font-weight: var(--w-structure);
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  .card__link:hover {
+    color: var(--ash);
+  }
+
+  .card__more {
+    font-weight: var(--w-structure);
+    font-size: 13px;
+    color: var(--violet);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+
+  .card__more:hover {
+    border-bottom-color: var(--violet);
+  }
+</style>

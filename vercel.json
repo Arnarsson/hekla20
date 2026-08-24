@@ -1,0 +1,11 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    { "source": "/consultancy", "destination": "/", "permanent": true },
+    { "source": "/ventures", "destination": "/", "permanent": true },
+    { "source": "/rally", "destination": "/", "permanent": true },
+    { "source": "/flint", "destination": "/", "permanent": true },
+    { "source": "/jobefterjob", "destination": "/", "permanent": true }
+  ]
+}

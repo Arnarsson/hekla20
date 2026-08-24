@@ -1,0 +1,18 @@
+---
+/**
+ * One route for every product that has a detail page.
+ */
+import ProductLayout from '../layouts/ProductLayout.astro';
+import { pagedProducts } from '../data/products';
+
+export function getStaticPaths() {
+  return pagedProducts.map((product) => ({
+    params: { product: product.slug },
+    props: { product },
+  }));
+}
+
+const { product } = Astro.props;
+---
+
+<ProductLayout product={product} />

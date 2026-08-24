@@ -1,0 +1,70 @@
+---
+/**
+ * The footer marquee. Pinned to the bottom of the viewport, pauses on hover,
+ * and stops entirely under reduced motion.
+ *
+ * The lines are written twice so the track can translate exactly -50% and
+ * loop with no visible seam. It is decorative repetition of copy that already
+ * exists on the page, so the whole strip is hidden from assistive tech.
+ */
+import { tickerLines } from '../data/site';
+
+const doubled = [...tickerLines, ...tickerLines];
+---
+
+<div class="tickers" aria-hidden="true">
+  <div class="ticker">
+    <div class="ticker__track">
+      {doubled.map((line) => <span>{line}</span>)}
+    </div>
+  </div>
+</div>
+
+<style>
+  .tickers {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+  }
+
+  .ticker {
+    background: var(--black);
+    color: var(--paper);
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .ticker__track {
+    display: inline-block;
+    white-space: nowrap;
+    will-change: transform;
+    font-size: 13px;
+    padding: 12px 0;
+    animation: ticker-run 58s linear infinite;
+  }
+
+  .ticker__track span {
+    padding: 0 2.4em;
+  }
+
+  .ticker:hover .ticker__track {
+    animation-play-state: paused;
+  }
+
+  @keyframes ticker-run {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ticker__track {
+      animation: none;
+    }
+  }
+</style>

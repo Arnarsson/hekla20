@@ -1,0 +1,123 @@
+---
+import { site, footerColumns } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="site-footer__grid">
+      <div>
+        <div class="site-footer__brand">
+          <a href="/" class="wordmark wordmark--ink">HEKLA</a>
+          <span class="tick" aria-hidden="true"></span>
+        </div>
+        <p class="site-footer__address">
+          {site.address.street}<br />
+          {site.address.postal}, {site.address.country}
+        </p>
+      </div>
+
+      {
+        footerColumns.map((col) => (
+          <nav aria-label={col.heading}>
+            <h2 class="site-footer__heading">{col.heading}</h2>
+            <ul>
+              {col.links.map((link) => (
+                <li><a href={link.href}>{link.label}</a></li>
+              ))}
+            </ul>
+          </nav>
+        ))
+      }
+    </div>
+
+    <div class="site-footer__legal">
+      <span>
+        &copy; {year} {site.name} &middot; {site.legalName} &middot; CVR {site.cvr} &middot; {site.address.city}
+      </span>
+      <a href="/privacy">Privacy policy</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--smoke);
+    padding: 56px 0 40px;
+  }
+
+  .site-footer__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+
+  .site-footer__brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .site-footer__brand .tick {
+    height: 14px;
+    width: 10px;
+  }
+
+  .site-footer__brand a {
+    text-decoration: none;
+  }
+
+  .site-footer__address {
+    font-size: 14px;
+    color: var(--ash);
+    margin-top: 14px;
+  }
+
+  .site-footer__heading {
+    font-weight: var(--w-structure);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: var(--track-label);
+    color: var(--ash);
+    margin-bottom: 12px;
+  }
+
+  .site-footer ul {
+    list-style: none;
+  }
+
+  .site-footer li a {
+    display: block;
+    font-size: 14px;
+    text-decoration: none;
+    padding: 3px 0;
+  }
+
+  .site-footer li a:hover {
+    color: var(--ash);
+  }
+
+  .site-footer__legal {
+    font-size: 12px;
+    color: var(--ash);
+    border-top: 1px solid var(--smoke);
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .site-footer__legal a {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 768px) {
+    .site-footer__grid {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+  }
+</style>

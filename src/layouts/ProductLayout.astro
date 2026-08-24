@@ -1,0 +1,329 @@
+---
+/**
+ * Every product page, from one template.
+ *
+ * The five product pages in the handoff were five near-identical files, which
+ * is how their crumb numbering drifted out of step with the front page. Here
+ * the page is a function of the product entry in src/data/products.ts.
+ */
+import BaseLayout from './BaseLayout.astro';
+import PhotoMat from '../components/PhotoMat.astro';
+import FlowDiagram from '../components/FlowDiagram.astro';
+import { railPosition, productsFactsNote, type Product } from '../data/products';
+
+interface Props {
+  product: Product;
+}
+
+const { product } = Astro.props;
+const page = product.page!;
+const crumbLabel = page.crumbLabel ?? railPosition(product.slug) ?? '';
+const factsNote = page.factsNote === undefined ? productsFactsNote : page.factsNote;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: product.name,
+  serviceType: page.title,
+  description: page.metaDescription,
+  provider: { '@type': 'Organization', name: 'HEKLA', url: 'https://hekla.cc' },
+  areaServed: 'DK',
+};
+---
+
+<BaseLayout title={page.title} description={page.metaDescription} jsonLd={jsonLd}>
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="crumbs">
+        <a href={page.crumb.href}>{page.crumb.label}</a>
+        <span class="label"><span class="tick" aria-hidden="true"></span>{crumbLabel}</span>
+      </p>
+      <h1 set:html={page.headingHtml} />
+      <p class="lead" set:html={page.leadHtml} />
+    </div>
+  </section>
+
+  <section class="photo-band">
+    <div class="wrap">
+      <PhotoMat media={page.hero} variant="band" loading="eager" />
+    </div>
+  </section>
+
+  <FlowDiagram diagram={page.diagram} compact />
+
+  <section class="detail">
+    <div class="wrap detail__grid">
+      <div>
+        <h2>What you get</h2>
+        <ul class="getlist">
+          {
+            page.getList.map((item) => (
+              <li>
+                <strong>{item.title}</strong>
+                <span>{item.note}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <aside class="facts" aria-labelledby="facts-heading">
+        <h2 id="facts-heading" class="visually-hidden">Key facts</h2>
+        <dl>
+          {
+            page.facts.map((fact) => (
+              <>
+                <dt>{fact.term}</dt>
+                <dd>{fact.def}</dd>
+              </>
+            ))
+          }
+        </dl>
+        {page.priceChip && <p class="facts__price"><span class="price-chip"><span>{page.priceChip}</span></span></p>}
+        <a href={page.cta.href} class="btn btn--ink facts__cta">{page.cta.label}</a>
+        {factsNote && <p class="facts__note">{factsNote}</p>}
+      </aside>
+    </div>
+  </section>
+
+  {
+    page.runSteps && (
+      <section class="runsteps">
+        <div class="wrap">
+          <h2>How it runs</h2>
+          <ol class="runsteps__grid">
+            {page.runSteps.map((step, i) => (
+              <li class="runstep">
+                <span class="runstep__num" aria-hidden="true">{i + 1}</span>
+                <h3>{step.title}</h3>
+                <p>{step.body}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="limits">
+    <div class="wrap">
+      <div class="limits__inner">
+        <h2>Where it does not fit</h2>
+        <p>{page.limits}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="band-dark" aria-labelledby="closing-heading">
+    <div class="wrap">
+      <h2 id="closing-heading">{page.closing.heading}</h2>
+      <a href={page.closing.cta.href} class="btn btn--primary">{page.closing.cta.label}</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 72px 0 40px;
+  }
+
+  .crumbs {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    max-width: none;
+  }
+
+  .crumbs a {
+    font-weight: var(--w-structure);
+    font-size: 13px;
+    text-decoration: none;
+    color: var(--ash);
+  }
+
+  .crumbs a:hover {
+    color: var(--black);
+  }
+
+  .page-hero h1 {
+    font-weight: var(--w-display);
+    letter-spacing: var(--track-display);
+    font-size: clamp(38px, 5.6vw, 68px);
+    line-height: 1.08;
+    margin: 8px 0 22px;
+  }
+
+  .page-hero .lead {
+    font-size: 18px;
+  }
+
+  .photo-band {
+    padding: 0 0 4px;
+  }
+
+  .detail {
+    padding: 40px 0 72px;
+  }
+
+  .detail__grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .detail h2 {
+    font-weight: var(--w-structure);
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    margin-bottom: 18px;
+  }
+
+  .getlist {
+    list-style: none;
+  }
+
+  .getlist li {
+    padding: 14px 0;
+    border-top: 1px solid var(--smoke);
+    font-size: 16px;
+  }
+
+  .getlist li:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .getlist strong {
+    font-weight: var(--w-structure);
+    display: block;
+  }
+
+  .getlist span {
+    font-size: 14px;
+    color: var(--ash);
+  }
+
+  .facts {
+    background: var(--white);
+    border: 1px solid var(--smoke);
+    padding: 28px;
+  }
+
+  .facts dl {
+    margin-bottom: 22px;
+  }
+
+  .facts dt {
+    font-weight: var(--w-structure);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: var(--track-label);
+    color: var(--ash);
+    margin-top: 16px;
+  }
+
+  .facts dt:first-of-type {
+    margin-top: 0;
+  }
+
+  .facts dd {
+    font-size: 16px;
+    font-weight: var(--w-structure);
+  }
+
+  .facts__price {
+    margin-bottom: 18px;
+  }
+
+  .facts__cta {
+    display: block;
+    text-align: center;
+  }
+
+  .facts__note {
+    font-size: 13px;
+    color: var(--ash);
+    margin-top: 14px;
+  }
+
+  .runsteps {
+    padding: 0 0 72px;
+  }
+
+  .runsteps h2 {
+    font-weight: var(--w-structure);
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    margin-bottom: 26px;
+  }
+
+  .runsteps__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    list-style: none;
+  }
+
+  .runstep__num {
+    font-weight: var(--w-display);
+    font-size: 40px;
+    letter-spacing: var(--track-display);
+    color: var(--ash);
+    display: block;
+    margin-bottom: 8px;
+    line-height: 1.1;
+  }
+
+  .runstep h3 {
+    font-weight: var(--w-structure);
+    font-size: 17px;
+    margin-bottom: 6px;
+  }
+
+  .runstep p {
+    font-size: 15px;
+  }
+
+  .limits {
+    padding: 0 0 88px;
+  }
+
+  .limits__inner {
+    border-top: 1px solid var(--smoke);
+    padding-top: 28px;
+  }
+
+  .limits h2 {
+    font-weight: var(--w-structure);
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: var(--track-label);
+    color: var(--ash);
+    margin-bottom: 10px;
+  }
+
+  .limits p {
+    font-size: 16px;
+  }
+
+  @media (max-width: 1024px) {
+    .detail__grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .runsteps__grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .page-hero {
+      padding: 56px 0 32px;
+    }
+  }
+</style>

@@ -1,0 +1,28 @@
+{
+  "name": "hekla-site",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "hekla.cc \u2014 HEKLA, AI engineering, Copenhagen",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build && node scripts/prune-dist.mjs",
+    "preview": "astro preview",
+    "check": "astro check && npm run build && node scripts/check-links.mjs",
+    "media": "node scripts/encode-media.mjs",
+    "check:links": "node scripts/check-links.mjs"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.6.0",
+    "astro": "^5.14.1",
+    "sharp": "^0.34.4"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "^4.13.0",
+    "axe-core": "^4.13.0",
+    "playwright": "^1.62.1",
+    "typescript": "^5.9.3"
+  }
+}

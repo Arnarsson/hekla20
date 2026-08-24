@@ -1,0 +1,105 @@
+---
+/**
+ * The page shell. Head, masthead, ticker, footer and the three scripts every
+ * page runs. Individual pages provide only their own <main>.
+ */
+import { site } from '../data/site';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import Ticker from '../components/Ticker.astro';
+import '../styles/site.css';
+
+interface Props {
+  /** Page title, without the brand suffix. Pass null to use the brand line. */
+  title: string | null;
+  description: string;
+  /** Overrides the og:description, which is usually shorter than the meta one. */
+  ogDescription?: string;
+  isHome?: boolean;
+  /** Extra JSON-LD, serialised into its own script tag. */
+  jsonLd?: Record<string, unknown>;
+}
+
+const { title, description, ogDescription, isHome = false, jsonLd } = Astro.props;
+
+const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.tagline}`;
+const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', site.url).href;
+const ogImage = new URL('/og.png', site.url).href;
+const social = ogDescription ?? description;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={social} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="HEKLA. Yes, we build AI." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={social} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/og.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,200;0,400;0,600;0,900;1,900&display=swap"
+    />
+
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'Organization',
+        name: site.name,
+        legalName: site.legalName,
+        url: site.url,
+        email: site.email,
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: site.address.street,
+          postalCode: site.address.postal.split(' ')[0],
+          addressLocality: site.address.city,
+          addressCountry: 'DK',
+        },
+      })}
+    />
+    {jsonLd && <script is:inline type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Header isHome={isHome} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+    <Ticker />
+
+    <script>
+      import { initReveal } from '../scripts/reveal';
+      import { initMotion } from '../scripts/motion';
+      import { initWordmark } from '../scripts/wordmark';
+
+      initReveal();
+      initMotion();
+      initWordmark();
+    </script>
+  </body>
+</html>

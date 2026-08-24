@@ -1,0 +1,318 @@
+---
+/**
+ * The system map.
+ *
+ * A row of nodes joined by arrows, with a violet pulse travelling along each
+ * arrow. Every diagram in the handoff hand-placed its own x coordinates,
+ * which is why no two of them lined up. Here the geometry is computed from
+ * the number of steps, so a diagram is a list of labels and nothing else.
+ *
+ * The whole SVG is a single role="img" with the flow written out in
+ * `summary`, because a screen reader reading twenty loose <text> nodes in
+ * document order learns nothing.
+ */
+import type { Diagram } from '../data/products';
+
+interface Props {
+  diagram: Diagram;
+  /** The front page runs the taller register; product pages run compact. */
+  compact?: boolean;
+}
+
+const { diagram, compact = false } = Astro.props;
+const { summary, tag, meta, live = false, steps, branch } = diagram;
+
+/* Geometry. One source of truth for both registers. */
+const VW = 1160;
+const PAD = 20;
+const GAP = 80;
+
+const g = compact
+  ? { stampY: 30, nodeY: 48, nodeH: 36, subY: 102, ruleY: 126, height: 150 }
+  : { stampY: 52, nodeY: 70, nodeH: 40, subY: 128, ruleY: 164, height: 190 };
+
+const height = branch ? g.height + 26 : g.height;
+const nodeW = (VW - PAD * 2 - GAP * (steps.length - 1)) / steps.length;
+const labelY = g.nodeY + g.nodeH / 2 + 4;
+
+const laidOut = steps.map((step, i) => {
+  const x = PAD + i * (nodeW + GAP);
+  return { ...step, x, cx: x + nodeW / 2 };
+});
+
+/* Marker ids must be unique per page: two diagrams sharing an id makes the
+   second one's arrowheads inherit the first one's fill. Derived from the tag
+   rather than randomised, so the built markup is byte-stable between builds. */
+const uid = `arrow-${tag.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`;
+
+const branchNode = branch ? laidOut[branch.fromIndex] : null;
+const BRANCH_W = 200;
+const BRANCH_H = 26;
+const branchTop = g.nodeY + g.nodeH + 24;
+---
+
+<section class:list={['diagram', compact && 'diagram--compact']}>
+  <div class="wrap">
+    <div class="diagram__head">
+      <span class="diagram__tag">{tag}</span>
+      <span class="diagram__meta">
+        {live && <span class="diagram__livedot" aria-hidden="true" />}
+        {meta}
+      </span>
+    </div>
+
+    <div class="diagram__scroll">
+    <svg class="diagram__svg" viewBox={`0 0 ${VW} ${height}`} role="img" aria-label={summary}>
+      <defs>
+        <marker
+          id={uid}
+          viewBox="0 0 10 10"
+          refX="8"
+          refY="5"
+          markerWidth="7"
+          markerHeight="7"
+          orient="auto-start-reverse"
+        >
+          <path d="M0,0L10,5L0,10Z" class="diagram__arrowhead" />
+        </marker>
+      </defs>
+
+      <line x1={PAD} y1={g.ruleY} x2={VW - PAD} y2={g.ruleY} class="diagram__rule" />
+
+      {
+        laidOut.map((step, i) => {
+          const prev = laidOut[i - 1];
+          const armX1 = prev ? prev.x + nodeW : 0;
+          const armX2 = step.x;
+          const armY = g.nodeY + g.nodeH / 2;
+          return (
+            <>
+              {prev && (
+                <>
+                  <line
+                    x1={armX1}
+                    y1={armY}
+                    x2={armX2}
+                    y2={armY}
+                    class:list={['diagram__line', step.dashedIn && 'diagram__line--dash']}
+                    marker-end={`url(#${uid})`}
+                  />
+                  <line
+                    x1={armX1}
+                    y1={armY}
+                    x2={armX2}
+                    y2={armY}
+                    class="diagram__pulse"
+                    style={`--len:${GAP}px;animation-delay:${(i - 1) * 0.28}s`}
+                  />
+                </>
+              )}
+              <text x={step.cx} y={g.stampY} text-anchor="middle" class="diagram__stamp">
+                {step.stamp}
+              </text>
+              <rect
+                x={step.x}
+                y={g.nodeY}
+                width={nodeW}
+                height={g.nodeH}
+                class:list={['diagram__node', step.accent && 'diagram__node--agent']}
+              />
+              <text
+                x={step.cx}
+                y={labelY}
+                text-anchor="middle"
+                class:list={['diagram__label', step.accent && 'diagram__label--light']}
+              >
+                {step.label}
+              </text>
+              <text x={step.cx} y={g.subY} text-anchor="middle" class="diagram__sub">
+                {step.sub}
+              </text>
+            </>
+          );
+        })
+      }
+
+      {
+        branchNode && branch && (
+          <>
+            <line
+              x1={branchNode.cx}
+              y1={g.nodeY + g.nodeH}
+              x2={branchNode.cx}
+              y2={branchTop}
+              class="diagram__line diagram__line--dash"
+              marker-end={`url(#${uid})`}
+            />
+            <rect
+              x={branchNode.cx - BRANCH_W / 2}
+              y={branchTop}
+              width={BRANCH_W}
+              height={BRANCH_H}
+              class="diagram__node"
+            />
+            <text x={branchNode.cx} y={branchTop + 17} text-anchor="middle" class="diagram__label">
+              {branch.label}
+            </text>
+            <text x={branchNode.cx} y={branchTop + 38} text-anchor="middle" class="diagram__sub">
+              {branch.sub}
+            </text>
+          </>
+        )
+      }
+    </svg>
+    </div>
+  </div>
+</section>
+
+<style>
+  .diagram {
+    border-top: 1px solid var(--smoke);
+    border-bottom: 1px solid var(--smoke);
+    background: var(--paper);
+    padding: 28px 0 34px;
+  }
+
+  .diagram--compact {
+    padding: 22px 0 26px;
+  }
+
+  .diagram__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .diagram__tag {
+    font-weight: var(--w-structure);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ash);
+  }
+
+  .diagram__meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    color: var(--ash);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .diagram__livedot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--moss);
+  }
+
+  .diagram__svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+  }
+
+  .diagram__arrowhead {
+    fill: var(--black);
+  }
+
+  .diagram__rule {
+    stroke: var(--smoke);
+    stroke-width: 1;
+  }
+
+  .diagram__line {
+    fill: none;
+    stroke: var(--black);
+    stroke-width: 1;
+  }
+
+  .diagram__line--dash {
+    stroke-dasharray: 3 4;
+  }
+
+  .diagram__node {
+    fill: var(--paper);
+    stroke: var(--black);
+    stroke-width: 1;
+  }
+
+  .diagram__node--agent {
+    fill: var(--violet);
+    stroke: var(--violet);
+  }
+
+  .diagram__label {
+    font-family: var(--font-sans);
+    font-weight: var(--w-structure);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    fill: var(--black);
+  }
+
+  .diagram__label--light {
+    fill: var(--paper);
+  }
+
+  .diagram__sub,
+  .diagram__stamp {
+    font-family: var(--font-sans);
+    font-weight: var(--w-body);
+    font-size: 11px;
+    fill: var(--ash);
+  }
+
+  .diagram__stamp {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+
+  /* A short violet dash travelling the length of each arrow. */
+  .diagram__pulse {
+    fill: none;
+    stroke: var(--violet);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-dasharray: 8 999;
+    stroke-dashoffset: 8;
+    animation: diagram-flow 2.4s linear infinite;
+  }
+
+  @keyframes diagram-flow {
+    from {
+      stroke-dashoffset: 8;
+    }
+    to {
+      stroke-dashoffset: calc(-1 * var(--len, 80px));
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .diagram__pulse {
+      animation: none;
+      visibility: hidden;
+    }
+  }
+
+  /* Below roughly 700px a 1160-unit row of nodes is unreadable at any scale,
+     so the diagram scrolls sideways at a legible size instead of shrinking. */
+  @media (max-width: 700px) {
+    .diagram .wrap {
+      padding-right: 0;
+    }
+
+    .diagram__svg {
+      min-width: 720px;
+    }
+
+    .diagram__scroll {
+      overflow-x: auto;
+    }
+  }
+</style>

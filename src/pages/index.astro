@@ -1,0 +1,397 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PhotoMat from '../components/PhotoMat.astro';
+import FlowDiagram from '../components/FlowDiagram.astro';
+import ProductRail from '../components/ProductRail.astro';
+import ContactForm from '../components/ContactForm.astro';
+import { site } from '../data/site';
+import { hero, homeDiagram, howWeWork, about, contact } from '../data/home';
+---
+
+<BaseLayout title={null} description={site.description} ogDescription={site.ogDescription} isHome>
+  <section class="hero" id="top">
+    <div class="wrap hero__inner">
+      <span class="label"><span class="tick" aria-hidden="true"></span>{hero.eyebrow}</span>
+
+      <h1 class="hero__word">{hero.wordmark}</h1>
+      <p class="hero__tagline">{hero.tagline}</p>
+      <p class="hero__lines">
+        {hero.lines.map((line, i) => <>{i > 0 && <br />}{line}</>)}
+      </p>
+
+      <div class="hero__ctas">
+        {
+          hero.ctas.map((cta) => (
+            <a href={cta.href} class:list={['btn', cta.variant === 'primary' && 'btn--primary']}>
+              {cta.label}
+            </a>
+          ))
+        }
+      </div>
+
+      <dl class="proof">
+        {
+          hero.proof.map((item) => (
+            <div class="proof__item">
+              <dt class="proof__label">{item.label}</dt>
+              <dd class="proof__num">{item.number}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+
+    <div class="hero__photos" aria-hidden="true">
+      {
+        hero.photos.map((media, i) => (
+          <PhotoMat
+            media={media}
+            variant="float"
+            loading={i === 0 ? 'eager' : 'lazy'}
+            class={`hero__photo hero__photo--${i + 1}`}
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <FlowDiagram diagram={homeDiagram} />
+
+  <section id="products">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <span class="label">Products</span>
+        <h2 class="section-head__title">Different ways to <i>work together</i></h2>
+        <p>From a working prototype to a full system, all scoped in the first meeting.</p>
+      </div>
+      <ProductRail />
+    </div>
+  </section>
+
+  <section id="how" class="band-dark">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <span class="label"><span class="tick" aria-hidden="true"></span>How we work</span>
+        <h2>{howWeWork.heading}</h2>
+      </div>
+
+      <ol class="steps">
+        {
+          howWeWork.steps.map((step, i) => (
+            <li class="step" data-reveal>
+              <span class="step__num" aria-hidden="true">{i + 1}</span>
+              <PhotoMat media={step.media} variant="step" monogram="paper" />
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <span class="label"><span class="tick" aria-hidden="true"></span>About</span>
+        <h2>{about.heading}</h2>
+      </div>
+
+      <div class="about__grid">
+        <div class="about__copy">
+          {about.copy.map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+        <PhotoMat media={about.media} variant="about" class="about__photo" />
+      </div>
+    </div>
+  </section>
+
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <div class="section-head" data-reveal>
+        <span class="label">Contact</span>
+        <h2>{contact.heading}</h2>
+        <p>{contact.intro}</p>
+      </div>
+
+      <div class="contact__grid">
+        <ContactForm />
+
+        <div class="contact__details">
+          <h3>Where we are</h3>
+          <address class="contact__address">
+            {site.address.street}<br />
+            {site.address.postal}, {site.address.country}
+          </address>
+          <a class="contact__email" href={`mailto:${site.email}`}>{site.email}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* --- Hero ------------------------------------------------------------- */
+
+  .hero {
+    position: relative;
+    overflow: hidden;
+    padding: 72px 0 56px;
+  }
+
+  .hero__inner {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero__word {
+    font-weight: var(--w-mark);
+    font-style: italic;
+    text-transform: uppercase;
+    letter-spacing: var(--track-mark);
+    font-size: clamp(56px, 9vw, 120px);
+    line-height: 0.9;
+    margin: 14px 0 4px;
+  }
+
+  .hero__tagline {
+    font-weight: var(--w-display);
+    font-size: clamp(30px, 5vw, 58px);
+    letter-spacing: -0.02em;
+    line-height: 1.08;
+    margin-bottom: 18px;
+    max-width: none;
+  }
+
+  .hero__lines {
+    font-size: 18px;
+    color: var(--ash);
+    max-width: 46ch;
+  }
+
+  .hero__ctas {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin: 44px 0 52px;
+  }
+
+  .proof {
+    display: flex;
+    gap: 56px;
+    flex-wrap: wrap;
+  }
+
+  /* The number is the answer and the label is the question, so the number is
+     the <dd>. Reversing them visually keeps the reading order sensible. */
+  .proof__item {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .proof__num {
+    font-weight: var(--w-display);
+    letter-spacing: var(--track-display);
+    font-size: 44px;
+    line-height: 1.1;
+    margin: 0;
+  }
+
+  .proof__label {
+    font-weight: var(--w-structure);
+    text-transform: uppercase;
+    font-size: 11px;
+    letter-spacing: var(--track-label);
+    color: var(--ash);
+  }
+
+  .hero__photos {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .hero__photos :global(.hero__photo) {
+    position: absolute;
+    width: 150px;
+  }
+
+  .hero__photos :global(.hero__photo--1) {
+    top: 10%;
+    right: 8%;
+    transform: rotate(-4deg);
+  }
+
+  .hero__photos :global(.hero__photo--2) {
+    bottom: 14%;
+    right: 20%;
+    width: 130px;
+    transform: rotate(3deg);
+  }
+
+  .hero__photos :global(.hero__photo--3) {
+    top: 42%;
+    right: 2%;
+    width: 120px;
+    transform: rotate(-2deg);
+  }
+
+  /* --- Section heads ---------------------------------------------------- */
+
+  .section-head__title {
+    text-transform: uppercase;
+  }
+
+  .section-head__title i {
+    font-style: italic;
+  }
+
+  /* --- How we work ------------------------------------------------------ */
+
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 36px;
+    margin-top: 44px;
+    list-style: none;
+  }
+
+  .step__num {
+    font-weight: var(--w-display);
+    font-size: 44px;
+    letter-spacing: var(--track-display);
+    color: var(--smoke);
+    display: block;
+    line-height: 1.1;
+  }
+
+  .step h3 {
+    font-weight: var(--w-structure);
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+
+  .step p {
+    font-size: 15px;
+    color: var(--smoke);
+  }
+
+  /* --- About ------------------------------------------------------------ */
+
+  .about {
+    border-top: 1px solid var(--smoke);
+  }
+
+  .about__grid {
+    display: grid;
+    grid-template-columns: 1.3fr 0.7fr;
+    gap: 48px;
+    align-items: start;
+    margin-top: 8px;
+  }
+
+  .about__copy p {
+    font-size: 16px;
+    margin-bottom: 16px;
+  }
+
+  /* --- Contact ---------------------------------------------------------- */
+
+  .contact {
+    border-top: 1px solid var(--smoke);
+  }
+
+  .contact__grid {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 56px;
+    align-items: start;
+  }
+
+  .contact__details h3 {
+    font-weight: var(--w-structure);
+    font-size: 16px;
+    margin-bottom: 14px;
+  }
+
+  .contact__address {
+    font-style: normal;
+    font-size: 15px;
+    color: var(--ash);
+  }
+
+  .contact__email {
+    display: inline-block;
+    margin-top: 14px;
+    font-weight: var(--w-structure);
+    font-size: 17px;
+    text-decoration: none;
+    border-bottom: 1px solid var(--smoke);
+  }
+
+  .contact__email:hover {
+    color: var(--violet);
+    border-bottom-color: var(--violet);
+  }
+
+  /* --- Responsive ------------------------------------------------------- */
+
+  @media (max-width: 1024px) {
+    .about__grid,
+    .contact__grid {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .steps {
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+
+    /* The floating polaroids leave the background and become a row. */
+    .hero__photos {
+      position: static;
+      display: flex;
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    /* Relative, not static. The monogram is absolutely positioned inside the
+       mat, and a static mat lets it escape up to the hero's top-left corner. */
+    .hero__photos :global(.hero__photo) {
+      position: relative;
+      inset: auto;
+      transform: none;
+      width: auto;
+      flex: 1 1 0;
+      min-width: 0;
+      box-shadow: 0 8px 20px rgb(11 11 11 / 12%);
+      --mat-h: 96px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding: 56px 0 48px;
+    }
+
+    .hero__ctas {
+      margin: 32px 0 44px;
+    }
+
+    .proof {
+      gap: 36px;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .hero__photos :global(.hero__photo--3) {
+      display: none;
+    }
+
+    .hero__photos :global(.hero__photo) {
+      --mat-h: 84px;
+    }
+  }
+</style>
