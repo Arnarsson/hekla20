@@ -28,9 +28,12 @@ import sharp from 'sharp';
 const SRC = 'media-src';
 const OUT = join('public', 'media');
 
-/* The push, for still masters. Ten percent over three seconds is the drift the
-   inherited clips have. More reads as a zoom, which is a different gesture. */
-const PUSH = 0.1;
+/* The push, for still masters. Around ten percent over three seconds is the
+   drift the inherited clips have. More reads as a zoom, which is a different
+   gesture. Eight rather than ten because a push crops from every edge, and on
+   a portrait the edge that matters is the top: ten percent plus the drift put
+   the crop line within five pixels of the top of a head. */
+const PUSH = 0.08;
 const PUSH_SECONDS = 3;
 /* The push travels rather than sitting in the middle of the frame, and it
    travels along the house angle: the same ten degrees the mat's bottom edge
