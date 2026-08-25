@@ -32,6 +32,12 @@ const OUT = join('public', 'media');
    inherited clips have. More reads as a zoom, which is a different gesture. */
 const PUSH = 0.1;
 const PUSH_SECONDS = 3;
+/* The push travels rather than sitting in the middle of the frame, and it
+   travels along the house angle: the same ten degrees the mat's bottom edge
+   is cut at, rising to the right. DRIFT is how far, as a fraction of the
+   master's width. Two percent is felt rather than seen, which is the point. */
+const DRIFT = 0.02;
+const SLANT = Math.tan((10 * Math.PI) / 180);
 const FPS = 20;
 /* Painted at 380 CSS pixels wide at most, so this is the two times asset. */
 const WIDTH = 760;
@@ -68,13 +74,20 @@ console.log(`[media] Encoding ${masters.length} master(s) from ${SRC}/ into ${OU
  * The graph then plays itself backwards and joins the two halves. The reverse
  * drops its own first frame, which is the forward half's last, so the turn
  * does not sit on a doubled frame.
+ *
+ * The crop travels left and down over the push, which is the frame travelling
+ * up and to the right: the house angle. Left and down is also the safe
+ * direction on a group photograph, since it eats into empty ceiling and open
+ * space rather than into whoever stands at the edge.
  */
 function pushGraph(width, height) {
   const frames = PUSH_SECONDS * FPS;
+  const step = `on/${frames - 1}`;
   return [
     `[0:v]scale=${width * 4}:-1,`,
-    `zoompan=z='1+${PUSH}*on/${frames - 1}':d=1`,
-    `:x='iw/2-(iw/zoom/2)':y='ih/2-(ih/zoom/2)'`,
+    `zoompan=z='1+${PUSH}*${step}':d=1`,
+    `:x='iw/2-(iw/zoom/2)-iw*${DRIFT}*${step}'`,
+    `:y='ih/2-(ih/zoom/2)+iw*${(DRIFT * SLANT).toFixed(6)}*${step}'`,
     `:s=${width}x${height}:fps=${FPS}[v];`,
     `[v]split[a][b];`,
     `[b]reverse,trim=start_frame=1,setpts=PTS-STARTPTS[r];`,

@@ -91,6 +91,7 @@ export const about = {
     kind: 'motion',
     name: 'founders',
     alt: 'Hjalti, Christopher and Sven, the three founders of HEKLA, in a harbourside building in Copenhagen',
+    tear: true,
   } as Media,
 };
 

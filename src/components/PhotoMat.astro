@@ -93,6 +93,7 @@ const { widths, sizes, quality } = RENDERED[variant];
       />
     )
   }
+  {media.tear && <canvas class="mat__tear" aria-hidden="true" />}
   <span class="mat__monogram" aria-hidden="true">H</span>
   {caption && <figcaption class="mat__caption">{caption}</figcaption>}
 </figure>
@@ -115,6 +116,16 @@ const { widths, sizes, quality } = RENDERED[variant];
     /* The cut: bottom edge sliced at the slant, rising to the right. */
     clip-path: var(--photo-cut);
     background: var(--smoke);
+  }
+
+  /* The tear surface. Laid over the image by photo-tear.ts, which measures
+     the image and sets the geometry, and shown only while a tear lasts. */
+  .mat__tear {
+    position: absolute;
+    visibility: hidden;
+    z-index: 1;
+    clip-path: var(--photo-cut);
+    pointer-events: none;
   }
 
   /* The italic H stamp. Paper on dark images, black on light. */
