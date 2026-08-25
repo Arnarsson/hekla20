@@ -8,7 +8,6 @@ import heroGrid from '../assets/photos/hero-grid.png';
 import jonathanCastaneda from '../assets/photos/jonathan-castaneda-w.jpg';
 import stepLookFurkan from '../assets/photos/step-look-furkan.jpg';
 import stepHandoverYuriy from '../assets/photos/step-handover-yuriy.jpg';
-import founders from '../assets/photos/founders.jpg';
 
 export const hero = {
   eyebrow: 'AI Engineering · Copenhagen',
@@ -89,8 +88,8 @@ export const about = {
     'HEKLA builds smart, fast, cheaper and without the theatre.',
   ],
   media: {
-    kind: 'image',
-    src: founders,
+    kind: 'motion',
+    name: 'founders',
     alt: 'Hjalti, Christopher and Sven, the three founders of HEKLA, in a harbourside building in Copenhagen',
   } as Media,
 };
