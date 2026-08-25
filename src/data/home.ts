@@ -89,9 +89,10 @@ export const about = {
   ],
   media: {
     kind: 'motion',
-    name: 'about-group',
-    alt: 'Four people standing together, looking down at the camera',
+    name: 'founders',
+    alt: 'Hjalti, Christopher and Sven, the three founders of HEKLA, photographed from below under wooden rafters',
     monogram: 'paper',
+    tear: true,
   } as Media,
 };
 

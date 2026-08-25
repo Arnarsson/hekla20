@@ -26,23 +26,31 @@ import tomW from '../assets/photos/tom-w-w.jpg';
  */
 export type Monogram = 'ink' | 'paper';
 
-/** A still photograph, optimised at build time by astro:assets. */
-export interface StillMedia {
-  kind: 'image';
-  src: ImageMetadata;
+interface MediaBase {
   alt: string;
   monogram?: Monogram;
+  /**
+   * Tear this image the way the masthead wordmark tears: seven bands, a few
+   * pixels apart, for a third of a second every twenty seconds or so. One
+   * glitching element per screen is the rule, and the masthead already takes
+   * a turn, so at most one image on the site ever sets this.
+   */
+  tear?: boolean;
+}
+
+/** A still photograph, optimised at build time by astro:assets. */
+export interface StillMedia extends MediaBase {
+  kind: 'image';
+  src: ImageMetadata;
 }
 
 /**
  * A moving clip. `name` resolves to /media/<name>.mp4, .webm and .jpg, all
- * three produced from the GIF master by `npm run media`.
+ * three produced from the master in media-src/ by `npm run media`.
  */
-export interface MotionMedia {
+export interface MotionMedia extends MediaBase {
   kind: 'motion';
   name: string;
-  alt: string;
-  monogram?: Monogram;
 }
 
 export type Media = StillMedia | MotionMedia;

@@ -90,6 +90,16 @@ A browser downloads one of the two video formats, so the real saving is closer
 to 95%. To add a clip, drop the GIF in `media-src/`, run `npm run media`, and
 reference it as `{ kind: 'motion', name: '<filename without extension>' }`.
 
+A still photograph can be a master too. Drop a `.jpg` or `.png` in `media-src/`
+and `npm run media` gives it the slow push instead of transcoding frames: the
+frame creeps in over three seconds, travelling along the 10 degree house angle,
+and then creeps back out, so the loop closes on itself rather than snapping at
+the seam. `PUSH` at the top of the script is how far it creeps. It is kept low
+enough that the crop never reaches the top of a head. The inherited clips animate
+the same way, they just snap. It is referenced exactly like a GIF master, as
+`{ kind: 'motion', name: '...' }`, and the poster is the frame the push starts
+from, so a visitor who never sees it move sees the photograph itself.
+
 Clips never autoplay on load. They start when they scroll into view, pause
 when they leave, and never play at all under `prefers-reduced-motion`, where
 the poster frame stands in as a still photograph.
