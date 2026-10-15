@@ -37,7 +37,7 @@ export const nav = [
 ] as const;
 
 /** The primary call to action, repeated in the masthead and across pages. */
-export const primaryCta = { href: '/#contact', label: '→ Book a conversation' } as const;
+export const primaryCta = { href: '/#contact', label: '→ Start a conversation' } as const;
 
 export const footerColumns = [
   {
@@ -54,7 +54,7 @@ export const footerColumns = [
   {
     heading: 'Contact',
     links: [
-      { href: '/#contact', label: 'Book a conversation' },
+      { href: '/#contact', label: 'Start a conversation' },
       { href: `mailto:${site.email}`, label: site.email },
     ],
   },

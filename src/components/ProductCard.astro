@@ -13,7 +13,7 @@ interface Props {
 const { product } = Astro.props;
 const href = product.page ? `/${product.slug}` : '/#contact';
 const position = railPosition(product.slug);
-const enquiryLabel = product.enquiry?.cta ?? 'Book a conversation';
+const enquiryLabel = product.enquiry?.cta ?? 'Start a conversation';
 ---
 
 <article class="card">

@@ -15,7 +15,7 @@ export const hero = {
   tagline: 'Yes, we build AI.',
   lines: ['Engineering firm in Copenhagen.', 'Workers that run inside your company, 24/7.'],
   ctas: [
-    { href: '#contact', label: '→ Book a conversation', variant: 'primary' as const },
+    { href: '#contact', label: '→ Start a conversation', variant: 'primary' as const },
     { href: '#products', label: 'See what we build', variant: 'plain' as const },
   ],
   proof: [
@@ -109,6 +109,6 @@ export const about = {
 };
 
 export const contact = {
-  heading: "What is eating your team's week?",
-  intro: 'Tell us and we will see if we can eat it off your plate.',
+  heading: 'What is eating your week?',
+  intro: 'For you, or for your team. Tell us and we will see if we can eat it off your plate.',
 };

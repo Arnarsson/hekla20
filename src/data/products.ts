@@ -157,7 +157,7 @@ export interface Product {
   fitLine?: string;
 }
 
-const bookCta = { href: '/#contact', label: '→ Book a conversation' };
+const bookCta = { href: '/#contact', label: '→ Start a conversation' };
 const allProductsCrumb = { href: '/#products', label: '← All products' };
 const factsNote = 'You will hear back within one working day.';
 
@@ -373,7 +373,7 @@ export const products: Product[] = [
         { term: 'Location', def: 'On site or remote' },
         { term: 'Preparation', def: 'We do it, not you' },
       ],
-      cta: { href: '/#contact', label: '→ Book a conversation' },
+      cta: { href: '/#contact', label: '→ Start a conversation' },
       limits:
         'If you want a keynote for two hundred people, this is the wrong product. This is sleeves up, twelve chairs, laptops open.',
       closing: { heading: 'One day. Your team leaves with something running.', cta: bookCta },
@@ -420,7 +420,7 @@ export const products: Product[] = [
         { term: 'Where it runs', def: 'Your infrastructure' },
         { term: 'Ownership', def: 'Yours, full handover' },
       ],
-      cta: { href: '/#contact', label: '→ Book a conversation' },
+      cta: { href: '/#contact', label: '→ Start a conversation' },
       runSteps: [
         { title: 'Look', body: 'We sit with the people who run the process today and map it as it actually runs.' },
         { title: 'Build', body: 'We ship the smallest thing that works and put it in production, in your environment.' },
@@ -482,7 +482,7 @@ export const products: Product[] = [
         { term: 'Where it runs', def: 'Your environment' },
         { term: 'Ownership', def: 'Yours, always' },
       ],
-      cta: { href: '/#contact', label: '→ Book a conversation' },
+      cta: { href: '/#contact', label: '→ Start a conversation' },
       limits:
         'We will tell you in the first conversation whether this is worth building. Sometimes the answer is no, and we will say so before you spend anything.',
       closing: { heading: 'Tell us what the standard products do not cover.', cta: bookCta },
