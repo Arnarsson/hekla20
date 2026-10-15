@@ -22,6 +22,18 @@ section {
   }
 }
 
+/* Phones: a tighter vertical rhythm and a 20px gutter, so a page is fewer
+   thumb-flicks long and a line of body copy gets the extra width. */
+@media (max-width: 560px) {
+  :root {
+    --gutter: 20px;
+  }
+
+  section {
+    padding: 52px 0;
+  }
+}
+
 /* --- Marks -------------------------------------------------------------- */
 
 /* 900 Black Italic uppercase is locked to wordmarks. It never sets a sentence. */
@@ -239,4 +251,22 @@ section {
 .section-head p {
   color: var(--ash);
   font-size: 16px;
+}
+
+@media (max-width: 560px) {
+  .section-head {
+    margin-bottom: 28px;
+  }
+
+  .section-head h2 {
+    margin: 12px 0 8px;
+  }
+
+  .band-dark {
+    padding: 76px 0 52px;
+  }
+
+  .btn {
+    padding: 13px 22px;
+  }
 }

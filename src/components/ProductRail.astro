@@ -126,13 +126,33 @@ import { railProducts } from '../data/products';
 
   @media (max-width: 760px) {
     .rail__track {
-      grid-auto-columns: 88%;
+      grid-auto-columns: 86%;
+      gap: 14px;
     }
 
     .rail__controls {
-      flex-direction: column-reverse;
-      align-items: flex-start;
-      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .rail__dots {
+      gap: 4px;
+    }
+
+    /* Same 3px bar, inside a 26x32 tap target. */
+    .rail__dots :global(.rail__dot) {
+      width: 30px;
+      height: 32px;
+      padding: 14.5px 2px;
+      background-clip: content-box;
+    }
+
+    .rail__dots :global(.rail__dot[aria-selected='true']) {
+      background-clip: content-box;
+    }
+
+    .rail__btn {
+      width: 44px;
+      height: 44px;
     }
   }
 </style>

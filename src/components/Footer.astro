@@ -115,9 +115,43 @@ const year = new Date().getFullYear();
   }
 
   @media (max-width: 768px) {
+    .site-footer {
+      padding: 44px 0 28px;
+    }
+
+    /* Brand on its own row, the two link columns side by side beneath it. */
     .site-footer__grid {
-      grid-template-columns: 1fr;
-      gap: 28px;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px 20px;
+      margin-bottom: 28px;
+    }
+
+    .site-footer__grid > :first-child {
+      grid-column: 1 / -1;
+    }
+
+    .site-footer__heading {
+      margin-bottom: 4px;
+    }
+
+    /* 44px rows: the links are thumb targets, not a sitemap in small print. */
+    .site-footer li a {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      padding: 0;
+      font-size: 15px;
+    }
+
+    .site-footer__legal {
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .site-footer__legal a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
     }
   }
 </style>
