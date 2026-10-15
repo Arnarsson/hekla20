@@ -178,7 +178,7 @@ export const products: Product[] = [
     fitLine: 'I need help keeping track of my work, information and relationships.',
     status: { kind: 'scoped', label: 'Configured per person' },
     oneliner:
-      'A personal AI assistant set up around one person\u2019s conversations, documents and commitments, so you stop being the one who has to remember everything.',
+      'A personal AI assistant set up around one person\u2019s mail, calendar and commitments, so you stop being the one who has to remember everything.',
     bullets: [
       'Ask across the sources you choose to connect',
       'Keeps track of people, projects and promises',
@@ -192,10 +192,10 @@ export const products: Product[] = [
     page: {
       title: 'Personal Unit, a personal AI assistant',
       metaDescription:
-        'Personal Unit is a personal AI assistant configured around your conversations, documents and commitments. Ask across the sources you connect, keep track of what you promised, and get drafts you approve.',
+        'Personal Unit is a personal AI assistant configured around your mail, calendar and commitments, on an installation of its own. Ask across the sources you connect, keep track of what you promised, and get drafts you approve.',
       headingHtml: 'Less <span class="erupt">remembering</span>.<br>More getting things done.',
       leadHtml:
-        '<span class="brandname">Personal Unit</span> is a personal AI assistant, set up around one person\u2019s conversations, documents and commitments. It finds what you need, keeps track of what you promised and prepares what comes next, so you stop briefing a chatbot from scratch every time.',
+        '<span class="brandname">Personal Unit</span> is a personal AI assistant, set up around one person\u2019s mail, calendar and commitments. It finds what you need, keeps track of what you promised and prepares what comes next, so you stop briefing a chatbot from scratch every time.',
       crumb: allProductsCrumb,
       hero: { kind: 'image', src: stepHandoverYuriy, alt: 'Two men reflected in the polished bodywork of a car on a street', monogram: 'paper' },
       diagram: {
@@ -204,7 +204,7 @@ export const products: Product[] = [
         tag: 'Flow \u00b7 Personal Unit',
         meta: 'configured per person',
         steps: [
-          { stamp: 'YOU CHOOSE', label: 'Your sources', sub: 'mail \u00b7 calendar \u00b7 docs' },
+          { stamp: 'YOU CHOOSE', label: 'Your sources', sub: 'mail \u00b7 calendar \u00b7 contacts' },
           { stamp: 'IN CONTEXT', label: 'Personal Unit', sub: 'finds \u00b7 remembers', accent: true },
           { stamp: 'WHAT MATTERS', label: 'Attention', sub: 'needs you \u00b7 can wait' },
           { stamp: 'PREPARED', label: 'Drafts', sub: 'replies \u00b7 briefs' },
@@ -224,7 +224,7 @@ export const products: Product[] = [
       getList: [
         {
           title: 'Ask across what you connect',
-          note: 'Plain questions about messages, documents, people and earlier decisions. It shows where an answer came from, and says when a source is not connected.',
+          note: 'Plain questions about messages, meetings, people and earlier decisions, answered from what you connect, with the source shown so you can check it.',
         },
         {
           title: 'Continuity around people and projects',
@@ -236,11 +236,11 @@ export const products: Product[] = [
         },
         {
           title: 'Drafts and briefs, ready when you are',
-          note: 'Replies, meeting context and document summaries prepared for you. A draft stays a draft until you send it.',
+          note: 'Replies and meeting context prepared for you. A draft stays a draft until you send it.',
         },
         {
           title: 'You stay in control',
-          note: 'You choose the sources and which actions need your approval. Personal and company information are kept apart, set up per engagement.',
+          note: 'You choose the sources, and consequential actions wait for your approval. It runs on an installation of its own and is not connected to company systems.',
         },
       ],
       facts: [
@@ -270,7 +270,7 @@ export const products: Product[] = [
     fitLine: 'We need help finding and preparing relevant commercial opportunities.',
     status: { kind: 'scoped', label: 'Configured per workflow' },
     oneliner:
-      'Finds companies that fit your criteria and have a reason to talk now, researches them and prepares an outreach draft for your team to review.',
+      'Checks prospects against your criteria, gathers the evidence for why each one fits now and prepares an outreach draft for your team to review.',
     bullets: [
       'Starts from your criteria and signals',
       'Every prospect comes with the evidence',
@@ -284,20 +284,20 @@ export const products: Product[] = [
     page: {
       title: 'Lead Agent',
       metaDescription:
-        'Lead Agent turns market signals into researched prospects. Tell it who you want to reach; it finds relevant companies, gathers the context and prepares outreach drafts for your team to review.',
+        'Lead Agent turns prospecting into researched, evidence-backed leads. Tell it who you want to reach; it checks prospects against that, gathers the evidence and prepares outreach drafts for your team to review.',
       headingHtml: 'Know who to contact.<br>And <span class="erupt">why</span>.',
       leadHtml:
-        '<span class="brandname">Lead Agent</span> finds companies that fit your criteria and show a reason to talk now, gathers the context and prepares your next conversation. You get researched prospects with the evidence attached, not a longer list of names.',
+        '<span class="brandname">Lead Agent</span> checks prospects against your criteria, gathers the evidence for why each one is worth contacting now and prepares your next conversation. You get researched prospects with the evidence attached, not a longer list of names.',
       crumb: allProductsCrumb,
       hero: { kind: 'image', src: jonathanCastaneda, alt: 'Two players mid-rally on a squash court, seen through a blurred ring' },
       diagram: {
         summary:
-          'You define the companies, roles and signals that matter. Lead Agent finds companies showing those signals, researches and prioritises them, and prepares an outreach draft for each. Your team reviews every draft and decides what happens next.',
+          'You define the companies, roles and signals that matter. Lead Agent checks prospects for those signals, researches and prioritises them, and prepares an outreach draft for each. Your team reviews every draft and decides what happens next.',
         tag: 'Flow \u00b7 Lead Agent',
         meta: 'human review built in',
         steps: [
           { stamp: 'DEFINE', label: 'Your criteria', sub: 'companies \u00b7 roles' },
-          { stamp: 'WHY NOW', label: 'Signals', sub: 'e.g. hiring' },
+          { stamp: 'WHY NOW', label: 'Signals', sub: 'sourced \u00b7 dated' },
           { stamp: 'RESEARCH', label: 'Lead Agent', sub: 'dedupes \u00b7 ranks', accent: true },
           { stamp: 'PREPARED', label: 'Lead packet', sub: 'evidence \u00b7 draft' },
           { stamp: 'YOU DECIDE', label: 'Your review', sub: 'before it goes out', dashedIn: true },
@@ -305,21 +305,21 @@ export const products: Product[] = [
       },
       getList: [
         { title: 'Your criteria, written down', note: 'Target companies, roles, market and the signals that matter to you, agreed before anything runs.' },
-        { title: 'Signals that say why now', note: 'Companies showing relevant activity. Hiring is where it starts today; other signals are scoped with you.' },
+        { title: 'Signals that say why now', note: 'Evidence of relevant activity, each item with its source and date. Prospects come from your own lists today; live signal sources such as hiring are scoped with you.' },
         { title: 'Researched, not just listed', note: 'Prospects deduplicated and prioritised, with company and decision-maker context gathered for each.' },
-        { title: 'Warm paths, where the data allows', note: 'Possible warm connections are flagged when suitable connection data is available.' },
+        { title: 'Duplicates and do-not-contact set aside', note: 'Prospects you already have, duplicates and anyone on your do-not-contact list are filtered out, with the reason shown.' },
         { title: 'A lead packet you can review', note: 'The company, why it is relevant, useful contact context, a draft grounded in the research and a suggested next step.' },
       ],
       facts: [
-        { term: 'First audience', def: 'Recruiters and agencies' },
+        { term: 'Who it is for', def: 'Teams that sell to businesses' },
         { term: 'You get', def: 'Reviewable lead packets' },
-        { term: 'Sending', def: 'Your team reviews first' },
+        { term: 'Sending', def: 'Never automatic. Your team sends' },
         { term: 'Other uses', def: 'Configured per engagement' },
       ],
       cta: { href: enquiryHref('lead-agent'), label: '\u2192 Discuss your lead workflow' },
       runSteps: [
         { title: 'Define', body: 'We write down who you want to reach and which signals make a company worth contacting now.' },
-        { title: 'Research', body: 'It finds matching companies, removes duplicates, ranks them and gathers the context for each one.' },
+        { title: 'Research', body: 'It checks your prospects against them, removes duplicates, ranks them and gathers the evidence for each one.' },
         { title: 'Review', body: 'Your team reads each lead packet, edits the draft and decides what happens next.' },
       ],
       limits:
