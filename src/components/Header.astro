@@ -21,7 +21,16 @@ const markLabel = isHome ? 'HEKLA, back to top' : 'HEKLA, back to the front page
   <div class="wrap site-header__inner">
     <a href={markHref} class="wordmark" aria-label={markLabel}>HEKLA</a>
 
-    <nav aria-label="Main">
+    <!-- Phones only; hidden on desktop. It sits before the nav in the source
+         so Tab goes from the toggle straight into the open menu, and CSS order
+         shows it after the CTA. Until the script runs, the nav stays the
+         sideways row, so nothing depends on JavaScript. -->
+    <button type="button" class="nav-toggle" aria-expanded="false" aria-controls="site-menu" data-nav-toggle>
+      <span class="nav-toggle__bars" aria-hidden="true"></span>
+      <span class="visually-hidden">Menu</span>
+    </button>
+
+    <nav id="site-menu" aria-label="Main">
       <ul class="site-nav">
         {nav.map((item) => (
           <li><a href={item.href}>{item.label}</a></li>
@@ -32,6 +41,11 @@ const markLabel = isHome ? 'HEKLA, back to top' : 'HEKLA, back to the front page
     <a href={primaryCta.href} class="btn btn--ink site-header__cta">{primaryCta.label}</a>
   </div>
 </header>
+
+<script>
+  import { initNav } from '../scripts/nav';
+  initNav();
+</script>
 
 <style>
   .site-header {
@@ -112,6 +126,120 @@ const markLabel = isHome ? 'HEKLA, back to top' : 'HEKLA, back to the front page
     .site-header__cta {
       font-size: 12px;
       padding: 9px 12px;
+    }
+  }
+
+  /* --- The phone menu ----------------------------------------------------
+     Once nav.ts has run, the sideways row becomes a toggle and a panel that
+     drops from the masthead: one 56px row per link, big enough for a thumb. */
+
+  .nav-toggle {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .site-header[data-menu] .site-header__inner {
+      flex-wrap: nowrap;
+      row-gap: 0;
+      padding-block: 8px;
+      min-height: 60px;
+      gap: 10px;
+    }
+
+    .site-header[data-menu] .site-header__cta {
+      margin-left: auto;
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      font-size: 13px;
+      padding: 0 14px;
+    }
+
+    .site-header[data-menu] .nav-toggle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: none;
+      width: 44px;
+      height: 44px;
+      margin-right: -10px;
+      order: 3;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    /* Two bars at the house slant; they cross when the menu is open. */
+    .nav-toggle__bars,
+    .nav-toggle__bars::after {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--black);
+      transition: transform var(--t-fast) var(--ease);
+    }
+
+    .nav-toggle__bars {
+      position: relative;
+      transform: translateY(-4px) skewX(var(--slant));
+    }
+
+    .nav-toggle__bars::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+    }
+
+    .site-header[data-open] .nav-toggle__bars {
+      transform: translateY(0) rotate(45deg);
+    }
+
+    .site-header[data-open] .nav-toggle__bars::after {
+      transform: translateY(-8px) rotate(-90deg);
+    }
+
+    .site-header[data-menu] nav {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--paper);
+      border-bottom: 1px solid var(--black);
+      padding: 4px var(--gutter) 16px;
+      max-height: calc(100dvh - 60px);
+      overflow-y: auto;
+    }
+
+    .site-header[data-open] nav {
+      display: block;
+    }
+
+    .site-header[data-menu] .site-nav {
+      display: block;
+      overflow: visible;
+      border-top: 0;
+      padding-top: 0;
+    }
+
+    .site-header[data-menu] .site-nav li + li {
+      border-top: 1px solid var(--smoke);
+    }
+
+    .site-header[data-menu] .site-nav a {
+      display: flex;
+      align-items: center;
+      min-height: 56px;
+      font-size: 20px;
+      letter-spacing: -0.01em;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .site-header[data-menu] .site-header__cta {
+      font-size: 12px;
+      padding: 0 12px;
     }
   }
 </style>
