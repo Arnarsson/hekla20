@@ -7,9 +7,28 @@
  * field filled in, rather than pretending to submit into nothing.
  */
 import { site } from '../data/site';
+import { homeProducts } from '../data/products';
+
+/* Without an endpoint the form cannot send anything itself; it opens the
+   visitor's mail app. The button and the line above the fields say so, so
+   nobody believes an enquiry went out when it did not. */
+const endpoint = import.meta.env.PUBLIC_FORM_ENDPOINT ?? '';
+const sends = endpoint !== '';
+
+const defaultPrompt = 'What would you like help with, and what would a useful result look like?';
+const options = homeProducts.map((p) => ({ value: p.slug, label: p.name, prompt: p.enquiry?.prompt ?? defaultPrompt }));
 ---
 
-<form class="form" data-contact-form data-mailto={site.email} novalidate>
+<form class="form" data-contact-form data-mailto={site.email} data-default-prompt={defaultPrompt} novalidate>
+  {
+    !sends && (
+      <p class="form__how">
+        This opens an email in your own mail app, addressed to {site.email} with everything below filled in. Nothing
+        is sent until you press send there.
+      </p>
+    )
+  }
+
   <div class="form__field">
     <label for="f-name">Name</label>
     <input type="text" id="f-name" name="name" autocomplete="name" required />
@@ -26,11 +45,20 @@ import { site } from '../data/site';
   </div>
 
   <div class="form__field">
-    <label for="f-message">What is eating your team's time?</label>
-    <textarea id="f-message" name="message" rows="5"></textarea>
+    <label for="f-product">What is it about?</label>
+    <select id="f-product" name="product">
+      <option value="" data-prompt={defaultPrompt}>Not sure yet</option>
+      {options.map((o) => <option value={o.value} data-prompt={o.prompt}>{o.label}</option>)}
+    </select>
   </div>
 
-  <button type="submit" class="btn btn--ink">&rarr; Send</button>
+  <div class="form__field">
+    <label for="f-message">What would you like help with?</label>
+    <p class="form__hint" id="f-message-hint" data-message-hint>{defaultPrompt}</p>
+    <textarea id="f-message" name="message" rows="5" aria-describedby="f-message-hint"></textarea>
+  </div>
+
+  <button type="submit" class="btn btn--ink">&rarr; {sends ? 'Send' : 'Open email draft'}</button>
 
   <p class="form__message" data-form-message role="status" aria-live="polite"></p>
   <p class="form__note">You will hear back within one working day.</p>
@@ -57,7 +85,22 @@ import { site } from '../data/site';
     margin-bottom: 6px;
   }
 
+  .form__how {
+    font-size: 14px;
+    color: var(--ash);
+    margin-bottom: 22px;
+    padding-left: 12px;
+    border-left: 2px solid var(--violet);
+  }
+
+  .form__hint {
+    font-size: 13px;
+    color: var(--ash);
+    margin: -2px 0 8px;
+  }
+
   .form input,
+  .form select,
   .form textarea {
     width: 100%;
     font-size: 15px;
@@ -69,12 +112,26 @@ import { site } from '../data/site';
     color: var(--black);
   }
 
+  .form select {
+    appearance: none;
+    border-radius: 0;
+    font-family: inherit;
+    padding-right: 40px;
+    /* A plain chevron, drawn in lava black. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%230b0b0b' stroke-width='1.5'/%3E%3C/svg%3E");
+    background-position: calc(100% - 16px) 50%;
+    background-size: 12px 8px;
+    background-repeat: no-repeat;
+  }
+
   .form input:hover,
+  .form select:hover,
   .form textarea:hover {
     border-color: var(--black);
   }
 
   .form input:focus,
+  .form select:focus,
   .form textarea:focus {
     border-color: var(--violet);
     outline: 2px solid var(--violet);
