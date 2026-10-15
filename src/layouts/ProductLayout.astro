@@ -51,6 +51,22 @@ const jsonLd = {
 
   <FlowDiagram diagram={page.diagram} compact />
 
+  {
+    page.examples && (
+      <section class="examples" aria-labelledby="examples-heading">
+        <div class="wrap">
+          <h2 id="examples-heading">{page.examples.heading}</h2>
+          <ul class="examples__list">
+            {page.examples.items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+          <p class="examples__note">{page.examples.note}</p>
+        </div>
+      </section>
+    )
+  }
+
   <section class="detail">
     <div class="wrap detail__grid">
       <div>
@@ -90,7 +106,7 @@ const jsonLd = {
     page.runSteps && (
       <section class="runsteps">
         <div class="wrap">
-          <h2>How it runs</h2>
+          <h2>{page.runStepsHeading ?? 'How it runs'}</h2>
           <ol class="runsteps__grid">
             {page.runSteps.map((step, i) => (
               <li class="runstep">
@@ -165,6 +181,52 @@ const jsonLd = {
 
   .detail {
     padding: 40px 0 72px;
+  }
+
+  /* Illustrative questions. Extra-light display type in quotation marks,
+     a hairline between them, and the note saying they are examples. */
+  .examples {
+    padding: 32px 0 8px;
+  }
+
+  .examples h2 {
+    font-weight: var(--w-structure);
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: var(--track-label);
+    color: var(--ash);
+    margin-bottom: 14px;
+  }
+
+  .examples__list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 40px;
+    border-top: 1px solid var(--smoke);
+  }
+
+  .examples__list li {
+    font-weight: var(--w-display);
+    letter-spacing: var(--track-display);
+    font-size: clamp(20px, 2.2vw, 26px);
+    line-height: 1.25;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--smoke);
+  }
+
+  .examples__list li::before {
+    content: '\201C';
+  }
+
+  .examples__list li::after {
+    content: '\201D';
+  }
+
+  .examples__note {
+    font-size: 13px;
+    color: var(--ash);
+    margin-top: 12px;
   }
 
   .detail__grid {
@@ -322,6 +384,10 @@ const jsonLd = {
   }
 
   @media (max-width: 768px) {
+    .examples__list {
+      grid-template-columns: 1fr;
+    }
+
     .page-hero {
       padding: 56px 0 32px;
     }
