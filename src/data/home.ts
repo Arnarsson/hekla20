@@ -46,6 +46,18 @@ export const homeDiagram = {
   ],
 };
 
+/**
+ * The products section. Two defined products first, as a pair, then the
+ * engineering and workshops rail beneath them.
+ */
+export const productsIntro = {
+  headingHtml: 'Two products. <i>Plus engineering</i>',
+  intro: 'Pick the one that sounds like your problem. Both are set up around how you actually work, and both start with a conversation.',
+  engineeringLabel: 'Engineering and workshops',
+  engineeringHeading: 'Or we build around your operations',
+  engineeringIntro: 'From a one-day workshop to a full system, all scoped in the first meeting.',
+};
+
 export const howWeWork = {
   heading: 'Three steps. No fourth',
   steps: [

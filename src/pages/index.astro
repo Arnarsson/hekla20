@@ -3,9 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PhotoMat from '../components/PhotoMat.astro';
 import FlowDiagram from '../components/FlowDiagram.astro';
 import ProductRail from '../components/ProductRail.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { featuredProducts } from '../data/products';
 import ContactForm from '../components/ContactForm.astro';
 import { site } from '../data/site';
-import { hero, homeDiagram, howWeWork, about, contact } from '../data/home';
+import { hero, homeDiagram, howWeWork, about, contact, productsIntro } from '../data/home';
 ---
 
 <BaseLayout title={null} description={site.description} ogDescription={site.ogDescription} isHome>
@@ -61,8 +63,18 @@ import { hero, homeDiagram, howWeWork, about, contact } from '../data/home';
     <div class="wrap">
       <div class="section-head" data-reveal>
         <span class="label">Products</span>
-        <h2 class="section-head__title">Different ways to <i>work together</i></h2>
-        <p>From a working prototype to a full system, all scoped in the first meeting.</p>
+        <h2 class="section-head__title" set:html={productsIntro.headingHtml} />
+        <p>{productsIntro.intro}</p>
+      </div>
+
+      <ul class="pair" aria-label="Products">
+        {featuredProducts.map((product) => <li><ProductCard product={product} /></li>)}
+      </ul>
+
+      <div class="section-head section-head--sub" data-reveal>
+        <span class="label"><span class="tick" aria-hidden="true"></span>{productsIntro.engineeringLabel}</span>
+        <h3>{productsIntro.engineeringHeading}</h3>
+        <p>{productsIntro.engineeringIntro}</p>
       </div>
       <ProductRail />
     </div>
@@ -131,6 +143,41 @@ import { hero, homeDiagram, howWeWork, about, contact } from '../data/home';
 </BaseLayout>
 
 <style>
+  /* --- Product pair ------------------------------------------------------
+     The two products side by side, always visible, above the rail of
+     workshops and engineering. Same cards as the rail, no carousel. */
+
+  .pair {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 72px;
+  }
+
+  .pair > li {
+    display: flex;
+  }
+
+  .pair > li > :global(.card) {
+    flex: 1;
+  }
+
+  .section-head--sub h3 {
+    font-weight: var(--w-structure);
+    letter-spacing: -0.01em;
+    font-size: clamp(22px, 2.4vw, 28px);
+    line-height: 1.2;
+    margin: 14px 0 10px;
+  }
+
+  @media (max-width: 760px) {
+    .pair {
+      grid-template-columns: 1fr;
+      margin-bottom: 56px;
+    }
+  }
+
   /* --- Hero ------------------------------------------------------------- */
 
   .hero {

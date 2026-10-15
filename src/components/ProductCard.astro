@@ -4,7 +4,7 @@
  * and no lift on hover: the border simply darkens.
  */
 import PhotoMat from './PhotoMat.astro';
-import { railPosition, type Product } from '../data/products';
+import { railPosition, enquiryHref, type Product } from '../data/products';
 
 interface Props {
   product: Product;
@@ -13,6 +13,7 @@ interface Props {
 const { product } = Astro.props;
 const href = product.page ? `/${product.slug}` : '/#contact';
 const position = railPosition(product.slug);
+const enquiryLabel = product.enquiry?.cta ?? 'Book a conversation';
 ---
 
 <article class="card">
@@ -29,6 +30,8 @@ const position = railPosition(product.slug);
     {product.status.label}
   </span>
 
+  {product.fitLine && <p class="card__fit">&ldquo;{product.fitLine}&rdquo;</p>}
+
   <p class="card__oneliner">{product.oneliner}</p>
 
   <ul class="card__list">
@@ -39,7 +42,7 @@ const position = railPosition(product.slug);
 
   <div class="card__foot">
     {product.price && <span class="card__price">{product.price}</span>}
-    <a href="/#contact" class="card__link">&rarr; Book a conversation</a>
+    <a href={enquiryHref(product.slug)} class="card__link">&rarr; {enquiryLabel}</a>
     {
       product.page && (
         <a href={`/${product.slug}`} class="card__more">
@@ -101,6 +104,16 @@ const position = railPosition(product.slug);
 
   .status {
     margin: 0 0 14px;
+  }
+
+  /* The visitor's own words for the problem. Display register, so it reads as
+     the question the card answers rather than as more feature copy. */
+  .card__fit {
+    font-weight: var(--w-display);
+    letter-spacing: var(--track-display);
+    font-size: 22px;
+    line-height: 1.25;
+    margin-bottom: 14px;
   }
 
   .card__oneliner {
