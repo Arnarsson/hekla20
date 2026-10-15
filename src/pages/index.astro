@@ -441,4 +441,126 @@ import { hero, homeDiagram, howWeWork, about, contact, productsIntro } from '../
       --mat-h: 84px;
     }
   }
+
+  /* --- Phones ------------------------------------------------------------
+     Shorter page, bigger targets. The hero CTAs become full-width thumb
+     buttons, the three proof numbers sit in one row, and How we work puts the
+     photo beside the step instead of above it. */
+  @media (max-width: 560px) {
+    .hero {
+      padding: 40px 0 36px;
+    }
+
+    .hero__word {
+      margin-top: 12px;
+    }
+
+    .hero__tagline {
+      margin-bottom: 14px;
+    }
+
+    .hero__lines {
+      font-size: 17px;
+    }
+
+    .hero__ctas {
+      flex-direction: column;
+      gap: 10px;
+      margin: 28px 0 32px;
+    }
+
+    .hero__ctas .btn {
+      text-align: center;
+      min-height: 52px;
+      font-size: 16px;
+    }
+
+    .proof {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--smoke);
+    }
+
+    .proof__item {
+      flex-direction: column-reverse;
+      justify-content: flex-end;
+      padding: 14px 10px 0 0;
+    }
+
+    .proof__item + .proof__item {
+      padding-left: 12px;
+      border-left: 1px solid var(--smoke);
+    }
+
+    .proof__num {
+      font-size: 34px;
+    }
+
+    .proof__label {
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      line-height: 1.35;
+      margin-top: 4px;
+    }
+
+    .hero__photos {
+      padding-inline: var(--gutter);
+      margin-top: 30px;
+    }
+
+    .pair {
+      gap: 16px;
+      margin-bottom: 44px;
+    }
+
+    .steps {
+      gap: 26px;
+      margin-top: 28px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      grid-template-areas:
+        'photo num'
+        'photo title'
+        'photo body';
+      grid-template-rows: auto auto 1fr;
+      column-gap: 16px;
+    }
+
+    .step__num {
+      grid-area: num;
+      font-size: 30px;
+    }
+
+    .step :global(.mat--step) {
+      grid-area: photo;
+      margin: 6px 0 0;
+      --mat-h: 112px;
+    }
+
+    .step h3 {
+      grid-area: title;
+      margin-bottom: 4px;
+    }
+
+    .step p {
+      grid-area: body;
+    }
+
+    .about__grid,
+    .contact__grid {
+      gap: 32px;
+    }
+
+    .about__copy p {
+      margin-bottom: 14px;
+    }
+
+    .about :global(.about__photo) {
+      --mat-h: 300px;
+    }
+  }
 </style>
