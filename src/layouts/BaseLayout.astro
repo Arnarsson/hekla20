@@ -23,7 +23,9 @@ interface Props {
 const { title, description, ogDescription, isHome = false, jsonLd } = Astro.props;
 
 const pageTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.tagline}`;
-const canonical = new URL(Astro.url.pathname.replace(/\/$/, '') || '/', site.url).href;
+/* build.format 'file' gives pathnames like /lead-agent.html; the served URL
+   (Vercel cleanUrls) is /lead-agent, so the canonical drops the extension. */
+const canonical = new URL(Astro.url.pathname.replace(/\.html$/, '').replace(/\/index$/, '/').replace(/\/$/, '') || '/', site.url).href;
 const ogImage = new URL('/og.png', site.url).href;
 const social = ogDescription ?? description;
 ---
