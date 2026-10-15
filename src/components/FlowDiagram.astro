@@ -162,6 +162,34 @@ const branchTop = g.nodeY + g.nodeH + 24;
       }
     </svg>
     </div>
+
+    <!-- The same flow, top to bottom, for phones. A row of five boxes cannot be
+         read at 360px at any scale, so below 700px this list replaces the SVG
+         (only one of the two is ever displayed, so a screen reader meets one). -->
+    <ol class="flow" aria-label={summary}>
+      {
+        laidOut.map((step, i) => (
+          <li class:list={['flow__step', step.accent && 'flow__step--agent', step.dashedIn && 'flow__step--dash']}>
+            {i > 0 && (
+              <span class="flow__arm" aria-hidden="true">
+                <span class="flow__pulse" style={`animation-delay:${(i - 1) * 0.28}s`} />
+              </span>
+            )}
+            <span class="flow__stamp">{step.stamp}</span>
+            <span class="flow__node">
+              <span class="flow__label">{step.label}</span>
+              <span class="flow__sub">{step.sub}</span>
+            </span>
+            {branch && branch.fromIndex === i && (
+              <span class="flow__branch">
+                <span class="flow__label">{branch.label}</span>
+                <span class="flow__sub">{branch.sub}</span>
+              </span>
+            )}
+          </li>
+        ))
+      }
+    </ol>
   </div>
 </section>
 
@@ -300,19 +328,161 @@ const branchTop = g.nodeY + g.nodeH + 24;
     }
   }
 
+  /* --- The vertical flow (phones) ---------------------------------------- */
+
+  .flow {
+    display: none;
+  }
+
   /* Below roughly 700px a 1160-unit row of nodes is unreadable at any scale,
-     so the diagram scrolls sideways at a legible size instead of shrinking. */
+     so the flow turns ninety degrees and reads top to bottom. */
   @media (max-width: 700px) {
-    .diagram .wrap {
-      padding-right: 0;
+    .diagram {
+      padding: 22px 0 26px;
     }
 
-    .diagram__svg {
-      min-width: 720px;
+    .diagram__head {
+      margin-bottom: 14px;
     }
 
     .diagram__scroll {
-      overflow-x: auto;
+      display: none;
+    }
+
+    .flow {
+      display: block;
+      list-style: none;
+      --stamp-w: 86px;
+      --arm: 20px;
+    }
+
+    .flow__step {
+      position: relative;
+      display: grid;
+      grid-template-columns: var(--stamp-w) 1fr;
+      column-gap: 12px;
+      align-items: center;
+    }
+
+    .flow__step + .flow__step {
+      padding-top: var(--arm);
+    }
+
+    .flow__stamp {
+      font-size: 10px;
+      font-weight: var(--w-structure);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      line-height: 1.25;
+      color: var(--ash);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .flow__node,
+    .flow__branch {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1px;
+      border: 1px solid var(--black);
+      background: var(--paper);
+      padding: 10px 14px;
+      min-height: 44px;
+    }
+
+    .flow__label {
+      font-weight: var(--w-structure);
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .flow__sub {
+      font-size: 13px;
+      line-height: 1.35;
+      color: var(--ash);
+    }
+
+    .flow__step--agent .flow__node {
+      background: var(--violet);
+      border-color: var(--violet);
+      color: var(--paper);
+    }
+
+    .flow__step--agent .flow__node .flow__sub {
+      color: var(--paper);
+    }
+
+    /* The arrow into a step: a hairline down the node's left third, an
+       arrowhead at its foot, and the violet pulse travelling along it. */
+    .flow__arm {
+      position: absolute;
+      top: 0;
+      left: calc(var(--stamp-w) + 12px + 28px);
+      height: var(--arm);
+      border-left: 1px solid var(--black);
+    }
+
+    .flow__step--dash .flow__arm {
+      border-left-style: dashed;
+    }
+
+    .flow__arm::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: -4.5px;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 6px solid var(--black);
+    }
+
+    .flow__pulse {
+      position: absolute;
+      left: -1.5px;
+      top: 0;
+      width: 2px;
+      height: 7px;
+      background: var(--violet);
+      animation: flow-down 2.4s linear infinite;
+    }
+
+    @keyframes flow-down {
+      from {
+        transform: translateY(-7px);
+        opacity: 0;
+      }
+      15% {
+        opacity: 1;
+      }
+      to {
+        transform: translateY(var(--arm, 20px));
+        opacity: 0;
+      }
+    }
+
+    /* A branch hangs off its step as a dashed aside, not as a next step. */
+    .flow__branch {
+      grid-column: 2;
+      margin-top: 8px;
+      margin-left: 20px;
+      border-style: dashed;
+      position: relative;
+    }
+
+    .flow__branch::before {
+      content: '\21B3';
+      position: absolute;
+      left: -20px;
+      top: 9px;
+      font-size: 14px;
+      color: var(--ash);
+    }
+  }
+
+  @media (max-width: 700px) and (prefers-reduced-motion: reduce) {
+    .flow__pulse {
+      display: none;
     }
   }
 </style>
