@@ -61,6 +61,18 @@ select {
   outline-color: var(--paper);
 }
 
+/* Product pages on phones: the CTA bar takes the ticker's slot, and the page
+   keeps clear of its 56px instead of the ticker's 44px. */
+@media (max-width: 760px) {
+  body.has-phone-cta {
+    padding-bottom: 56px;
+  }
+
+  body.has-phone-cta .tickers {
+    display: none;
+  }
+}
+
 /* For content that must exist for screen readers but not be painted. */
 .visually-hidden {
   position: absolute;
