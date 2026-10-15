@@ -23,9 +23,14 @@ export const site = {
   },
 } as const;
 
-/** Main navigation. Every entry is a section of the front page. */
+/**
+ * Main navigation. The two products first, by page, then the sections of the
+ * front page.
+ */
 export const nav = [
-  { href: '/#products', label: 'Products' },
+  { href: '/personal-unit', label: 'Personal Unit' },
+  { href: '/lead-agent', label: 'Lead Agent' },
+  { href: '/#products', label: 'All products' },
   { href: '/#about', label: 'About' },
   { href: '/#how', label: 'How we work' },
   { href: '/#contact', label: 'Contact' },
@@ -38,6 +43,7 @@ export const footerColumns = [
   {
     heading: 'Products',
     links: [
+      { href: '/personal-unit', label: 'Personal Unit' },
       { href: '/lead-agent', label: 'Lead Agent' },
       { href: '/undo', label: 'UNDO' },
       { href: '/workshops', label: 'Workshops' },

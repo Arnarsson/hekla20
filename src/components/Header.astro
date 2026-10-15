@@ -85,6 +85,10 @@ const markLabel = isHome ? 'HEKLA, back to top' : 'HEKLA, back to the front page
     .site-header nav {
       order: 3;
       flex-basis: 100%;
+      /* A flex item will not shrink below its content by default, so a nav
+         longer than the phone would widen the whole page instead of
+         scrolling inside its own row. */
+      min-width: 0;
     }
 
     .site-nav {
