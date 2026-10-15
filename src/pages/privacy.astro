@@ -12,7 +12,7 @@ const updated = '24 August 2026';
   <section class="page-hero">
     <div class="wrap">
       <p class="crumbs">
-        <a href="/">&larr; Front page</a>
+        <a class="hit" href="/">&larr; Front page</a>
         <span class="label"><span class="tick" aria-hidden="true"></span>Privacy</span>
       </p>
       <h1>Privacy <span class="erupt">policy</span></h1>
@@ -106,8 +106,10 @@ const updated = '24 August 2026';
     color: var(--ash);
   }
 
-  .crumbs a:hover {
-    color: var(--black);
+  @media (hover: hover) and (pointer: fine) {
+    .crumbs a:hover {
+      color: var(--black);
+    }
   }
 
   .page-hero h1 {

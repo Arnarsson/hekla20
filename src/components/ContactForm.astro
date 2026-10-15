@@ -124,10 +124,12 @@ const options = homeProducts.map((p) => ({ value: p.slug, label: p.name, prompt:
     background-repeat: no-repeat;
   }
 
-  .form input:hover,
-  .form select:hover,
-  .form textarea:hover {
-    border-color: var(--black);
+  @media (hover: hover) and (pointer: fine) {
+    .form input:hover,
+    .form select:hover,
+    .form textarea:hover {
+      border-color: var(--black);
+    }
   }
 
   .form input:focus,

@@ -63,8 +63,10 @@ const enquiryLabel = product.enquiry?.cta ?? 'Start a conversation';
     transition: border-color var(--t-base);
   }
 
-  .card:hover {
-    border-color: var(--black);
+  @media (hover: hover) and (pointer: fine) {
+    .card:hover {
+      border-color: var(--black);
+    }
   }
 
   .card__num {
@@ -79,9 +81,11 @@ const enquiryLabel = product.enquiry?.cta ?? 'Start a conversation';
     margin-bottom: 18px;
   }
 
-  .card__num:hover {
-    color: var(--violet);
-    border-bottom-color: var(--violet);
+  @media (hover: hover) and (pointer: fine) {
+    .card__num:hover {
+      color: var(--violet);
+      border-bottom-color: var(--violet);
+    }
   }
 
   .card__name {
@@ -162,8 +166,10 @@ const enquiryLabel = product.enquiry?.cta ?? 'Start a conversation';
     text-decoration: none;
   }
 
-  .card__link:hover {
-    color: var(--ash);
+  @media (hover: hover) and (pointer: fine) {
+    .card__link:hover {
+      color: var(--ash);
+    }
   }
 
   .card__more {
@@ -174,8 +180,10 @@ const enquiryLabel = product.enquiry?.cta ?? 'Start a conversation';
     border-bottom: 1px solid transparent;
   }
 
-  .card__more:hover {
-    border-bottom-color: var(--violet);
+  @media (hover: hover) and (pointer: fine) {
+    .card__more:hover {
+      border-bottom-color: var(--violet);
+    }
   }
 
   @media (max-width: 760px) {
@@ -230,7 +238,7 @@ const enquiryLabel = product.enquiry?.cta ?? 'Start a conversation';
     .card__num::before {
       content: '';
       position: absolute;
-      inset: -12px -10px;
+      inset: -13px -10px;
     }
   }
 </style>

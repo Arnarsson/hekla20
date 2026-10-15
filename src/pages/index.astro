@@ -135,7 +135,7 @@ import { hero, homeDiagram, howWeWork, about, contact, productsIntro } from '../
             {site.address.street}<br />
             {site.address.postal}, {site.address.country}
           </address>
-          <a class="contact__email" href={`mailto:${site.email}`}>{site.email}</a>
+          <a class="contact__email hit" href={`mailto:${site.email}`}>{site.email}</a>
         </div>
       </div>
     </div>
@@ -377,9 +377,11 @@ import { hero, homeDiagram, howWeWork, about, contact, productsIntro } from '../
     border-bottom: 1px solid var(--smoke);
   }
 
-  .contact__email:hover {
-    color: var(--violet);
-    border-bottom-color: var(--violet);
+  @media (hover: hover) and (pointer: fine) {
+    .contact__email:hover {
+      color: var(--violet);
+      border-bottom-color: var(--violet);
+    }
   }
 
   /* --- Responsive ------------------------------------------------------- */

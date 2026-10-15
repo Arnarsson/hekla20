@@ -55,13 +55,13 @@ const jsonLd = {
     page.examples && (
       <section class="examples" aria-labelledby="examples-heading">
         <div class="wrap">
-          <h2 id="examples-heading">{page.examples.heading}</h2>
+          <h2 id="examples-heading" data-reveal>{page.examples.heading}</h2>
           <ul class="examples__list">
             {page.examples.items.map((item) => (
-              <li>{item}</li>
+              <li data-reveal>{item}</li>
             ))}
           </ul>
-          <p class="examples__note">{page.examples.note}</p>
+          <p class="examples__note" data-reveal>{page.examples.note}</p>
         </div>
       </section>
     )
@@ -70,11 +70,11 @@ const jsonLd = {
   <section class="detail">
     <div class="wrap detail__grid">
       <div>
-        <h2>What you get</h2>
+        <h2 data-reveal>What you get</h2>
         <ul class="getlist">
           {
             page.getList.map((item) => (
-              <li>
+              <li data-reveal>
                 <strong>{item.title}</strong>
                 <span>{item.note}</span>
               </li>
@@ -83,7 +83,7 @@ const jsonLd = {
         </ul>
       </div>
 
-      <aside class="facts" aria-labelledby="facts-heading">
+      <aside class="facts" aria-labelledby="facts-heading" data-reveal>
         <h2 id="facts-heading" class="visually-hidden">Key facts</h2>
         <dl>
           {
@@ -106,10 +106,10 @@ const jsonLd = {
     page.runSteps && (
       <section class="runsteps">
         <div class="wrap">
-          <h2>{page.runStepsHeading ?? 'How it runs'}</h2>
+          <h2 data-reveal>{page.runStepsHeading ?? 'How it runs'}</h2>
           <ol class="runsteps__grid">
             {page.runSteps.map((step, i) => (
-              <li class="runstep">
+              <li class="runstep" data-reveal>
                 <span class="runstep__num" aria-hidden="true">{i + 1}</span>
                 <h3>{step.title}</h3>
                 <p>{step.body}</p>
@@ -123,7 +123,7 @@ const jsonLd = {
 
   <section class="limits">
     <div class="wrap">
-      <div class="limits__inner">
+      <div class="limits__inner" data-reveal>
         <h2>Where it does not fit</h2>
         <p>{page.limits}</p>
       </div>
@@ -159,8 +159,10 @@ const jsonLd = {
     color: var(--ash);
   }
 
-  .crumbs a:hover {
-    color: var(--black);
+  @media (hover: hover) and (pointer: fine) {
+    .crumbs a:hover {
+      color: var(--black);
+    }
   }
 
   .page-hero h1 {

@@ -19,7 +19,7 @@ const markLabel = isHome ? 'HEKLA, back to top' : 'HEKLA, back to the front page
 
 <header class="site-header">
   <div class="wrap site-header__inner">
-    <a href={markHref} class="wordmark" aria-label={markLabel}>HEKLA</a>
+    <a href={markHref} class="wordmark hit" aria-label={markLabel}>HEKLA</a>
 
     <!-- Phones only; hidden on desktop. It sits before the nav in the source
          so Tab goes from the toggle straight into the open menu, and CSS order
@@ -77,8 +77,10 @@ const markLabel = isHome ? 'HEKLA, back to top' : 'HEKLA, back to the front page
     text-decoration: none;
   }
 
-  .site-nav a:hover {
-    color: var(--ash);
+  @media (hover: hover) and (pointer: fine) {
+    .site-nav a:hover {
+      color: var(--ash);
+    }
   }
 
   .site-header__cta {
