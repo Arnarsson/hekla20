@@ -23,7 +23,7 @@ for (const [name, html] of pages) {
     const href = match[1];
     if (/^(https?:|mailto:|tel:|data:)/.test(href)) continue;
     /* Static assets are files, not routes. */
-    if (/\.(svg|png|jpe?g|webp|avif|gif|css|js|xml|txt|ico|mp4|webm)$/i.test(href)) continue;
+    if (/\.(svg|png|jpe?g|webp|avif|gif|css|js|xml|txt|ico|mp4|webm|woff2)$/i.test(href)) continue;
     checked++;
 
     /* A query string selects state on the page (?product= preselects the
