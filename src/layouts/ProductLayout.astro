@@ -107,7 +107,7 @@ const jsonLd = {
       <section class="runsteps">
         <div class="wrap">
           <h2 data-reveal>{page.runStepsHeading ?? 'How it runs'}</h2>
-          <ol class="runsteps__grid">
+          <ol class:list={['runsteps__grid', { 'runsteps__grid--five': page.runSteps.length === 5 }]}>
             {page.runSteps.map((step, i) => (
               <li class="runstep" data-reveal>
                 <span class="runstep__num" aria-hidden="true">{i + 1}</span>
@@ -166,6 +166,7 @@ const jsonLd = {
   }
 
   .page-hero h1 {
+    text-wrap: balance;
     font-weight: var(--w-display);
     letter-spacing: var(--track-display);
     font-size: clamp(38px, 5.6vw, 68px);
@@ -329,6 +330,12 @@ const jsonLd = {
     grid-template-columns: repeat(3, 1fr);
     gap: 32px;
     list-style: none;
+  }
+
+  /* Five steps read as one row on a wide screen, the way the app's menu does. */
+  .runsteps__grid--five {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 24px;
   }
 
   .runstep__num {
