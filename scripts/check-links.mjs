@@ -26,7 +26,10 @@ for (const [name, html] of pages) {
     if (/\.(svg|png|jpe?g|webp|avif|gif|css|js|xml|txt|ico|mp4|webm|woff2)$/i.test(href)) continue;
     checked++;
 
-    const [rawPath, hash] = href.split('#');
+    /* A query string selects state on the page (?product= preselects the
+       contact form); it does not change which page is linked. */
+    const [rawWithQuery, hash] = href.split('#');
+    const rawPath = rawWithQuery.split('?')[0];
     const target = rawPath === '' ? name : rawPath.replace(/^\//, '').replace(/\.html$/, '') || 'index';
 
     if (!pages.has(target)) {

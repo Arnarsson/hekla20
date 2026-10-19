@@ -23,21 +23,27 @@ export const site = {
   },
 } as const;
 
-/** Main navigation. Every entry is a section of the front page. */
+/**
+ * Main navigation. The two products first, by page, then the sections of the
+ * front page.
+ */
 export const nav = [
-  { href: '/#products', label: 'Products' },
+  { href: '/personal-unit', label: 'Personal Unit' },
+  { href: '/lead-agent', label: 'Lead Agent' },
+  { href: '/#products', label: 'All products' },
   { href: '/#about', label: 'About' },
   { href: '/#how', label: 'How we work' },
   { href: '/#contact', label: 'Contact' },
 ] as const;
 
 /** The primary call to action, repeated in the masthead and across pages. */
-export const primaryCta = { href: '/#contact', label: '→ Book a conversation' } as const;
+export const primaryCta = { href: '/#contact', label: '→ Start a conversation' } as const;
 
 export const footerColumns = [
   {
     heading: 'Products',
     links: [
+      { href: '/personal-unit', label: 'Personal Unit' },
       { href: '/lead-agent', label: 'Lead Agent' },
       { href: '/undo', label: 'UNDO' },
       { href: '/workshops', label: 'Workshops' },
@@ -48,7 +54,7 @@ export const footerColumns = [
   {
     heading: 'Contact',
     links: [
-      { href: '/#contact', label: 'Book a conversation' },
+      { href: '/#contact', label: 'Start a conversation' },
       { href: `mailto:${site.email}`, label: site.email },
     ],
   },

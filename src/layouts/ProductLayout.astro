@@ -31,7 +31,7 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout title={page.title} description={page.metaDescription} jsonLd={jsonLd}>
+<BaseLayout title={page.title} description={page.metaDescription} jsonLd={jsonLd} phoneCta={{ href: page.cta.href, label: page.cta.label.replace(/^\u2192\s*/, '') }}>
   <section class="page-hero">
     <div class="wrap">
       <p class="crumbs">
@@ -51,14 +51,30 @@ const jsonLd = {
 
   <FlowDiagram diagram={page.diagram} compact />
 
+  {
+    page.examples && (
+      <section class="examples" aria-labelledby="examples-heading">
+        <div class="wrap">
+          <h2 id="examples-heading" data-reveal>{page.examples.heading}</h2>
+          <ul class="examples__list">
+            {page.examples.items.map((item) => (
+              <li data-reveal>{item}</li>
+            ))}
+          </ul>
+          <p class="examples__note" data-reveal>{page.examples.note}</p>
+        </div>
+      </section>
+    )
+  }
+
   <section class="detail">
     <div class="wrap detail__grid">
       <div>
-        <h2>What you get</h2>
+        <h2 data-reveal>What you get</h2>
         <ul class="getlist">
           {
             page.getList.map((item) => (
-              <li>
+              <li data-reveal>
                 <strong>{item.title}</strong>
                 <span>{item.note}</span>
               </li>
@@ -67,7 +83,7 @@ const jsonLd = {
         </ul>
       </div>
 
-      <aside class="facts" aria-labelledby="facts-heading">
+      <aside class="facts" aria-labelledby="facts-heading" data-reveal>
         <h2 id="facts-heading" class="visually-hidden">Key facts</h2>
         <dl>
           {
@@ -80,7 +96,7 @@ const jsonLd = {
           }
         </dl>
         {page.priceChip && <p class="facts__price"><span class="price-chip"><span>{page.priceChip}</span></span></p>}
-        <a href={page.cta.href} class="btn btn--ink facts__cta">{page.cta.label}</a>
+        <a href={page.cta.href} class="btn btn--ink facts__cta" data-cta-watch>{page.cta.label}</a>
         {factsNote && <p class="facts__note">{factsNote}</p>}
       </aside>
     </div>
@@ -90,10 +106,10 @@ const jsonLd = {
     page.runSteps && (
       <section class="runsteps">
         <div class="wrap">
-          <h2>How it runs</h2>
-          <ol class="runsteps__grid">
+          <h2 data-reveal>{page.runStepsHeading ?? 'How it runs'}</h2>
+          <ol class:list={['runsteps__grid', { 'runsteps__grid--five': page.runSteps.length === 5 }]}>
             {page.runSteps.map((step, i) => (
-              <li class="runstep">
+              <li class="runstep" data-reveal>
                 <span class="runstep__num" aria-hidden="true">{i + 1}</span>
                 <h3>{step.title}</h3>
                 <p>{step.body}</p>
@@ -107,14 +123,14 @@ const jsonLd = {
 
   <section class="limits">
     <div class="wrap">
-      <div class="limits__inner">
+      <div class="limits__inner" data-reveal>
         <h2>Where it does not fit</h2>
         <p>{page.limits}</p>
       </div>
     </div>
   </section>
 
-  <section class="band-dark" aria-labelledby="closing-heading">
+  <section class="band-dark" aria-labelledby="closing-heading" data-cta-watch>
     <div class="wrap">
       <h2 id="closing-heading">{page.closing.heading}</h2>
       <a href={page.closing.cta.href} class="btn btn--primary">{page.closing.cta.label}</a>
@@ -143,11 +159,14 @@ const jsonLd = {
     color: var(--ash);
   }
 
-  .crumbs a:hover {
-    color: var(--black);
+  @media (hover: hover) and (pointer: fine) {
+    .crumbs a:hover {
+      color: var(--black);
+    }
   }
 
   .page-hero h1 {
+    text-wrap: balance;
     font-weight: var(--w-display);
     letter-spacing: var(--track-display);
     font-size: clamp(38px, 5.6vw, 68px);
@@ -165,6 +184,52 @@ const jsonLd = {
 
   .detail {
     padding: 40px 0 72px;
+  }
+
+  /* Illustrative questions. Extra-light display type in quotation marks,
+     a hairline between them, and the note saying they are examples. */
+  .examples {
+    padding: 32px 0 8px;
+  }
+
+  .examples h2 {
+    font-weight: var(--w-structure);
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: var(--track-label);
+    color: var(--ash);
+    margin-bottom: 14px;
+  }
+
+  .examples__list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 40px;
+    border-top: 1px solid var(--smoke);
+  }
+
+  .examples__list li {
+    font-weight: var(--w-display);
+    letter-spacing: var(--track-display);
+    font-size: clamp(20px, 2.2vw, 26px);
+    line-height: 1.25;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--smoke);
+  }
+
+  .examples__list li::before {
+    content: '\201C';
+  }
+
+  .examples__list li::after {
+    content: '\201D';
+  }
+
+  .examples__note {
+    font-size: 13px;
+    color: var(--ash);
+    margin-top: 12px;
   }
 
   .detail__grid {
@@ -267,6 +332,12 @@ const jsonLd = {
     list-style: none;
   }
 
+  /* Five steps read as one row on a wide screen, the way the app's menu does. */
+  .runsteps__grid--five {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 24px;
+  }
+
   .runstep__num {
     font-weight: var(--w-display);
     font-size: 40px;
@@ -322,8 +393,145 @@ const jsonLd = {
   }
 
   @media (max-width: 768px) {
+    .examples__list {
+      grid-template-columns: 1fr;
+    }
+
     .page-hero {
       padding: 56px 0 32px;
+    }
+  }
+
+  /* --- Phones -------------------------------------------------------------
+     Facts become a two-column table you can scan, the numbered steps put the
+     number beside the text, and the gaps between sections close up. */
+  @media (max-width: 560px) {
+    .page-hero {
+      padding: 36px 0 26px;
+    }
+
+    .crumbs {
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .crumbs a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      font-size: 14px;
+    }
+
+    .page-hero h1 {
+      font-size: clamp(34px, 9.6vw, 40px);
+      line-height: 1.1;
+      margin: 4px 0 16px;
+    }
+
+    .page-hero .lead {
+      font-size: 17px;
+      line-height: 1.55;
+    }
+
+    .examples {
+      padding: 28px 0 0;
+    }
+
+    .examples__list li {
+      font-size: 20px;
+      padding: 14px 0;
+    }
+
+    .detail {
+      padding: 36px 0 48px;
+    }
+
+    .detail__grid {
+      gap: 32px;
+    }
+
+    .detail h2,
+    .runsteps h2 {
+      font-size: 21px;
+      margin-bottom: 14px;
+    }
+
+    .getlist li {
+      padding: 12px 0;
+    }
+
+    .getlist span {
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .facts {
+      padding: 6px 20px 20px;
+    }
+
+    .facts dl {
+      display: grid;
+      grid-template-columns: minmax(96px, 36%) 1fr;
+      margin-bottom: 18px;
+    }
+
+    .facts dt,
+    .facts dd {
+      padding: 13px 0;
+      border-top: 1px solid var(--smoke);
+      margin: 0;
+    }
+
+    .facts dt {
+      padding-right: 12px;
+      line-height: 1.5;
+    }
+
+    .facts dd {
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    .facts dt:first-of-type,
+    .facts dt:first-of-type + dd {
+      border-top: 0;
+    }
+
+    .facts__cta {
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .runsteps {
+      padding: 0 0 48px;
+    }
+
+    .runsteps__grid {
+      gap: 18px;
+    }
+
+    .runstep {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      column-gap: 12px;
+      padding-top: 16px;
+      border-top: 1px solid var(--smoke);
+    }
+
+    .runstep__num {
+      grid-row: span 2;
+      font-size: 32px;
+      margin: -4px 0 0;
+    }
+
+    .limits {
+      padding: 0 0 56px;
+    }
+
+    .limits__inner {
+      padding-top: 22px;
     }
   }
 </style>

@@ -3,7 +3,7 @@
  *
  * The front page rail and the individual product pages both read from this
  * file, which is what keeps the card copy, the crumb numbering and the page
- * content from drifting apart. Adding a seventh product means adding one
+ * content from drifting apart. Adding a product means adding one
  * entry here; the rail, the numbering and the page are all derived.
  *
  * A product with `page: null` appears in the rail but has no detail page yet,
@@ -17,6 +17,7 @@ import janAntoninKolar from '../assets/photos/jan-antonin-kolar-w.jpg';
 import jonathanCastaneda from '../assets/photos/jonathan-castaneda-w.jpg';
 import julianMora from '../assets/photos/julian-mora-w.jpg';
 import purpleChair from '../assets/photos/purple-chair-w.jpg';
+import stepHandoverYuriy from '../assets/photos/step-handover-yuriy.jpg';
 import tomW from '../assets/photos/tom-w-w.jpg';
 
 /**
@@ -111,6 +112,13 @@ export interface ProductPage {
   factsNote?: string | null;
   /** "How it runs". Omitted where the page does not need it. */
   runSteps?: { title: string; body: string }[];
+  /** Overrides the "How it runs" heading above runSteps. */
+  runStepsHeading?: string;
+  /**
+   * Illustrative questions or scenarios, shown as a short list under the
+   * flow. They are examples of use, never testimonials, and the note says so.
+   */
+  examples?: { heading: string; items: string[]; note: string };
   limits: string;
   closing: { heading: string; cta: { href: string; label: string } };
 }
@@ -134,69 +142,201 @@ export interface Product {
   page: ProductPage | null;
   /** Keep out of the front page rail. UNDO is sold on its own site. */
   railHidden?: boolean;
+  /**
+   * How an enquiry about this product reads in the contact form. `cta` is the
+   * card's call to action; `prompt` is the hint under the message field once
+   * the product is selected, so the visitor knows what is useful to tell us.
+   */
+  enquiry?: { cta: string; prompt: string };
+  /**
+   * Shown as a pair above the rail on the front page, always visible, instead
+   * of as one card among many in the carousel.
+   */
+  featured?: boolean;
+  /** The visitor's own words for the problem, shown on the featured card. */
+  fitLine?: string;
 }
 
-const bookCta = { href: '/#contact', label: '→ Book a conversation' };
+const bookCta = { href: '/#contact', label: '→ Start a conversation' };
 const allProductsCrumb = { href: '/#products', label: '← All products' };
 const factsNote = 'You will hear back within one working day.';
+
+/**
+ * The contact form link for one product. The form reads `?product=` and
+ * preselects it, so the visitor does not have to explain which one they mean.
+ */
+export const enquiryHref = (slug: string) => `/?product=${slug}#contact`;
 
 export const productsFactsNote = factsNote;
 
 export const products: Product[] = [
   {
+    slug: 'personal-unit',
+    name: 'Personal Unit',
+    isWordmark: true,
+    featured: true,
+    fitLine: 'I need help keeping track of my work, information and relationships.',
+    status: { kind: 'scoped', label: 'Configured per person' },
+    oneliner:
+      'A personal AI assistant set up around one person\u2019s mail, calendar and commitments, so you stop being the one who has to remember everything.',
+    bullets: [
+      'Ask across the sources you choose to connect',
+      'Keeps track of people, projects and promises',
+      'Prepares drafts. You decide what gets sent',
+    ],
+    enquiry: {
+      cta: 'Talk about your Personal Unit',
+      prompt: 'What do you keep having to remember or chase? Which sources would it involve (email, calendar, documents), and what would a good week with it look like?',
+    },
+    card: { kind: 'image', src: stepHandoverYuriy, alt: 'Two men reflected in the polished bodywork of a car on a street', monogram: 'paper' },
+    page: {
+      title: 'Personal Unit, a personal AI assistant',
+      metaDescription:
+        'Personal Unit is a personal AI assistant configured around your mail, calendar and commitments, on an installation of its own. Ask across the sources you connect, keep track of what you promised, and get drafts you approve.',
+      headingHtml: 'Less <span class="erupt">remembering</span>.<br>More getting things done.',
+      leadHtml:
+        '<span class="brandname">Personal Unit</span> is a personal AI assistant, set up around one person\u2019s mail, calendar and commitments. It finds what you need, keeps track of what you promised and prepares what comes next, so you stop briefing a chatbot from scratch every time.',
+      crumb: allProductsCrumb,
+      hero: { kind: 'image', src: stepHandoverYuriy, alt: 'Two men reflected in the polished bodywork of a car on a street', monogram: 'paper' },
+      diagram: {
+        summary:
+          'You choose which sources to connect. Personal Unit finds and remembers what is in them, surfaces what needs your attention and prepares replies, briefs and summaries. Nothing consequential goes out until you approve it.',
+        tag: 'Flow \u00b7 Personal Unit',
+        meta: 'configured per person',
+        steps: [
+          { stamp: 'YOU CHOOSE', label: 'Your sources', sub: 'mail \u00b7 calendar \u00b7 contacts' },
+          { stamp: 'IN CONTEXT', label: 'Personal Unit', sub: 'finds \u00b7 remembers', accent: true },
+          { stamp: 'WHAT MATTERS', label: 'Attention', sub: 'needs you \u00b7 can wait' },
+          { stamp: 'PREPARED', label: 'Drafts', sub: 'replies \u00b7 briefs' },
+          { stamp: 'YOU DECIDE', label: 'Your approval', sub: 'before it goes out', dashedIn: true },
+        ],
+      },
+      examples: {
+        heading: 'The questions it is for',
+        items: [
+          'What did we agree with this client?',
+          'Which conversations still need a reply?',
+          'Find the document mentioned in that meeting.',
+          'Prepare a reply using the context of this conversation.',
+        ],
+        note: 'Examples of use, not customer quotes. Which sources can be connected is agreed when we set it up.',
+      },
+      getList: [
+        {
+          title: 'Ask across what you connect',
+          note: 'Plain questions about messages, meetings, people and earlier decisions, answered from what you connect, with the source shown so you can check it.',
+        },
+        {
+          title: 'Continuity around people and projects',
+          note: '\u201cWhere did we leave this?\u201d and \u201cWhat did I promise?\u201d answered from the history, not from your memory.',
+        },
+        {
+          title: 'An overview of what needs you',
+          note: 'Open questions, follow-ups and commitments, sorted into what needs a decision and what can wait. Not another stream of notifications.',
+        },
+        {
+          title: 'Drafts and briefs, ready when you are',
+          note: 'Replies and meeting context prepared for you. A draft stays a draft until you send it.',
+        },
+        {
+          title: 'You stay in control',
+          note: 'You choose the sources, and consequential actions wait for your approval. It runs on an installation of its own and is not connected to company systems.',
+        },
+      ],
+      facts: [
+        { term: 'Who it is for', def: 'Founders, executives, consultants' },
+        { term: 'What it is', def: 'Software set up for one person. Not a device' },
+        { term: 'Sources', def: 'Only the ones you choose to connect' },
+        { term: 'Processing', def: 'Agreed per setup, including any external model provider' },
+      ],
+      cta: { href: enquiryHref('personal-unit'), label: '\u2192 Talk about your Personal Unit' },
+      runStepsHeading: 'What setting it up involves',
+      runSteps: [
+        { title: 'Map', body: 'We start from your week: which conversations, documents and routines cost you the most remembering.' },
+        { title: 'Connect', body: 'We connect the sources you choose, inside boundaries you agree to. Nothing you have not chosen.' },
+        { title: 'Check', body: 'We configure it around your work and test it on real days, not a demo, before you rely on it.' },
+      ],
+      limits:
+        'If you want a chatbot for the odd question, buy a subscription and save the money. Personal Unit knows what you connect and does what you approve. It is not omniscient, not a replacement for you, and not a tool for watching employees.',
+      closing: { heading: 'What are you still keeping in your head?', cta: { href: enquiryHref('personal-unit'), label: '\u2192 Talk about your Personal Unit' } },
+    },
+  },
+
+  {
     slug: 'lead-agent',
     name: 'Lead Agent',
     isWordmark: true,
-    status: { kind: 'internal', label: 'Internal tool' },
+    featured: true,
+    fitLine: 'We have the list. We need to know who on it is worth a message.',
+    status: { kind: 'scoped', label: 'Set up per product you sell' },
     oneliner:
-      'An agent that answers every inbound lead within minutes, qualifies it against your criteria and books the good ones into your calendar.',
+      'Checks your list of people against the customer you describe, shows the evidence behind every judgment and leaves the decision and the sending to you.',
     bullets: [
-      'Replies in minutes, day and night',
-      'Qualifies before it books',
-      "Writes in your tone, not a script's",
+      'Starts from the customer you describe',
+      'Every judgment comes with its source',
+      'You decide, and you send every message',
     ],
+    enquiry: {
+      cta: 'Discuss your lead workflow',
+      prompt: 'What do you sell, and which job titles buy it? Where does your list of people come from today?',
+    },
     card: { kind: 'motion', name: 'lead-peephole', alt: 'A brass door peephole cover swinging open on a dark wooden door', monogram: 'paper' },
     page: {
       title: 'Lead Agent',
       metaDescription:
-        'Lead Agent answers every inbound enquiry within minutes, qualifies it against your criteria and books the good ones into your calendar. Live within two weeks, fully handed over.',
-      headingHtml: 'Every lead answered in <span class="erupt">minutes</span>.<br>Not on Monday.',
+        'Lead Agent works toward one goal: a meeting with someone who may buy what you sell. Describe your customer, bring a list, read the evidence for each person, decide, and send every message yourself.',
+      headingHtml: 'The list is the <span class="erupt">easy</span> part.',
       leadHtml:
-        '<span class="brandname">Lead Agent</span> watches your inbound channels, answers every enquiry within minutes, qualifies it against your criteria and books the good ones straight into your calendar. You wake up to meetings, not a backlog.',
+        'Four hundred names, and the real question is which five deserve a message. <span class="brandname">Lead Agent</span> checks your list against the customer you describe, shows the evidence behind every judgment and leaves the decision to you. You send every message yourself.',
       crumb: allProductsCrumb,
       hero: { kind: 'image', src: jonathanCastaneda, alt: 'Two players mid-rally on a squash court, seen through a blurred ring' },
       diagram: {
-        summary: 'An inbound enquiry is read and tagged by Lead Agent, qualified against your criteria, then booked into your calendar, all inside two minutes.',
-        tag: 'Flow · Lead Agent',
-        meta: 'avg reply 92 sec',
+        summary:
+          'You describe your ideal customer and bring a list of people. Lead Agent checks each person against that description and shows the evidence. You decide yes, no or hold, with a reason, and you send every message from your own mailbox.',
+        tag: 'Flow \u00b7 Lead Agent',
+        meta: 'you decide, you send',
         steps: [
-          { stamp: '09:14 IN', label: 'Inbound', sub: 'email & web form' },
-          { stamp: '09:14 READ', label: 'Lead Agent', sub: 'reads & tags', accent: true },
-          { stamp: '09:15 QUALIFIED', label: 'Qualify', sub: 'your criteria' },
-          { stamp: '09:16 BOOKED', label: 'Calendar', sub: 'meeting booked' },
+          { stamp: 'YOU DESCRIBE', label: 'Ideal customer', sub: 'product \u00b7 buyers \u00b7 need' },
+          { stamp: 'YOU BRING', label: 'Your list', sub: 'Excel \u00b7 CSV \u00b7 Sheet' },
+          { stamp: 'IT CHECKS', label: 'Lead Agent', sub: 'evidence \u00b7 scores', accent: true },
+          { stamp: 'YOU DECIDE', label: 'Yes, no, hold', sub: 'with a reason' },
+          { stamp: 'YOU SEND', label: 'Your mailbox', sub: 'never the app', dashedIn: true },
         ],
       },
+      examples: {
+        heading: 'What it answers for each person',
+        items: [
+          'Is Christian a buyer, or just senior?',
+          'What shows a need right now?',
+          'Where did that fact come from?',
+          'Who do I know who could introduce us?',
+        ],
+        note: 'The questions the Decide step is built around. Every fact links to its source and the date it was captured.',
+      },
       getList: [
-        { title: 'Replies in minutes, day and night', note: 'Email and web forms answered while your competitors sleep.' },
-        { title: 'Qualification before booking', note: 'Your criteria, applied to every lead. The weak ones get a polite no.' },
-        { title: 'Meetings straight into your calendar', note: 'Each one arrives with context: who they are, what they asked, what was said.' },
-        { title: 'A weekly digest', note: 'What came in, what was answered, what was booked. Five minutes to read.' },
-        { title: 'Runs in your environment', note: 'Your channels, your tone, your data. Full handover included.' },
+        { title: 'Your customer, written down', note: 'What you sell, which job titles buy it, what shows they need it, and the paragraph your first message starts from.' },
+        { title: 'Evidence before opinion', note: 'Buyer fit, need and evidence strength for each person, with every fact linked to its source. Facts from your own list are marked as yours.' },
+        { title: 'A second look at its own no', note: 'A share of the people it turned down comes back to you anyway, so a wrong rejection gets caught instead of quietly lost.' },
+        { title: 'One next step per yes', note: 'For everyone you accept: write the message, approve it, send it yourself, then note what happened.' },
       ],
       facts: [
-        { term: 'Setup', def: 'Live within two weeks' },
-        { term: 'Where it runs', def: 'Your channels and infrastructure' },
-        { term: 'Ownership', def: 'Yours, full handover' },
+        { term: 'Who it is for', def: 'Anyone selling to businesses' },
+        { term: 'Goal', def: 'A meeting with someone who may buy' },
+        { term: 'Sending', def: 'Never. You send every message yourself' },
+        { term: 'Spend', def: 'Capped, and priced before it runs' },
       ],
-      cta: { href: '/#contact', label: '→ Book a conversation' },
+      cta: { href: enquiryHref('lead-agent'), label: '\u2192 Discuss your lead workflow' },
+      runStepsHeading: 'Five steps, one goal',
       runSteps: [
-        { title: 'Connect', body: 'We plug into your inbound channels and your calendar. No rebuild of anything you have.' },
-        { title: 'Tune', body: "Your team reviews the first replies and sets the tone. The agent learns your criteria, not a template's." },
-        { title: 'Run', body: 'It answers, qualifies and books. You get the digest and the controls.' },
+        { title: 'Ideal customer', body: 'Say what you sell, which job titles buy it, what shows they need it, and the paragraph for your first message.' },
+        { title: 'Find people', body: 'Add your list from Excel, CSV, a Google Sheet or a paste. Choose how to check them and start.' },
+        { title: 'Decide', body: 'Read the assessment and the evidence for each person. Accept, reject or hold, with a reason.' },
+        { title: 'Contact', body: 'Each yes gets exactly one next step. You write it, approve it and send it from your own mailbox.' },
+        { title: 'Results', body: 'Meetings, customers, the path from yes to customer and what each meeting cost.' },
       ],
       limits:
-        'If you get fewer than a handful of leads a month, answer them yourself and save the money. This earns its price when volume or response time is costing you deals.',
-      closing: { heading: 'How many leads went unanswered last week?', cta: bookCta },
+        'If you want thousands of emails sent while you sleep, this is the wrong tool. Lead Agent never sends, never connects to a mailbox and does not find people on its own: you bring the list. It does not promise meetings. It makes sure the people you write to are worth writing to.',
+      closing: { heading: 'Who on your list is worth a message?', cta: { href: enquiryHref('lead-agent'), label: '\u2192 Discuss your lead workflow' } },
     },
   },
 
@@ -245,7 +385,7 @@ export const products: Product[] = [
         { term: 'Location', def: 'On site or remote' },
         { term: 'Preparation', def: 'We do it, not you' },
       ],
-      cta: { href: '/#contact', label: '→ Book a conversation' },
+      cta: { href: '/#contact', label: '→ Start a conversation' },
       limits:
         'If you want a keynote for two hundred people, this is the wrong product. This is sleeves up, twelve chairs, laptops open.',
       closing: { heading: 'One day. Your team leaves with something running.', cta: bookCta },
@@ -292,7 +432,7 @@ export const products: Product[] = [
         { term: 'Where it runs', def: 'Your infrastructure' },
         { term: 'Ownership', def: 'Yours, full handover' },
       ],
-      cta: { href: '/#contact', label: '→ Book a conversation' },
+      cta: { href: '/#contact', label: '→ Start a conversation' },
       runSteps: [
         { title: 'Look', body: 'We sit with the people who run the process today and map it as it actually runs.' },
         { title: 'Build', body: 'We ship the smallest thing that works and put it in production, in your environment.' },
@@ -354,7 +494,7 @@ export const products: Product[] = [
         { term: 'Where it runs', def: 'Your environment' },
         { term: 'Ownership', def: 'Yours, always' },
       ],
-      cta: { href: '/#contact', label: '→ Book a conversation' },
+      cta: { href: '/#contact', label: '→ Start a conversation' },
       limits:
         'We will tell you in the first conversation whether this is worth building. Sometimes the answer is no, and we will say so before you spend anything.',
       closing: { heading: 'Tell us what the standard products do not cover.', cta: bookCta },
@@ -449,8 +589,14 @@ export const products: Product[] = [
   },
 ];
 
+/** Every product shown on the front page, featured pair first, in order. */
+export const homeProducts = products.filter((p) => !p.railHidden);
+
+/** The pair shown side by side above the rail. */
+export const featuredProducts = homeProducts.filter((p) => p.featured);
+
 /** The products that appear in the front page rail, in order. */
-export const railProducts = products.filter((p) => !p.railHidden);
+export const railProducts = homeProducts.filter((p) => !p.featured);
 
 /** Products with a detail page, used to build the routes and the crumbs. */
 export const pagedProducts = products.filter((p) => p.page !== null);
@@ -459,13 +605,13 @@ export const pagedProducts = products.filter((p) => p.page !== null);
 export const getProduct = (slug: string): Product | undefined => products.find((p) => p.slug === slug);
 
 /**
- * The "→ 02 / 06" crumb. Derived from the rail so the numerator and the
+ * The "→ 02 / 07" crumb. Derived from the front page (featured pair, then rail) so the numerator and the
  * denominator can never disagree with what the front page actually shows,
  * which is exactly how the handoff drifted to "01 / 04" against six cards.
  */
 export function railPosition(slug: string): string | null {
-  const i = railProducts.findIndex((p) => p.slug === slug);
+  const i = homeProducts.findIndex((p) => p.slug === slug);
   if (i === -1) return null;
   const pad = (n: number) => String(n).padStart(2, '0');
-  return `→ ${pad(i + 1)} / ${pad(railProducts.length)}`;
+  return `→ ${pad(i + 1)} / ${pad(homeProducts.length)}`;
 }

@@ -61,6 +61,18 @@ select {
   outline-color: var(--paper);
 }
 
+/* Product pages on phones: the CTA bar takes the ticker's slot, and the page
+   keeps clear of its 56px instead of the ticker's 44px. */
+@media (max-width: 760px) {
+  body.has-phone-cta {
+    padding-bottom: 56px;
+  }
+
+  body.has-phone-cta .tickers {
+    display: none;
+  }
+}
+
 /* For content that must exist for screen readers but not be painted. */
 .visually-hidden {
   position: absolute;
@@ -94,13 +106,17 @@ select {
 
 /* Scroll reveal. Content is visible by default and the hidden state is only
    ever applied by JavaScript, so a script failure can never hide a section. */
+/* Timing after scroll-craft's flow reveal: a 14px rise over 620ms on a hard
+   ease-out reads as arriving; a bare 200ms fade reads as a loading glitch.
+   Siblings get a short stagger from reveal.ts so the eye is led down a list. */
 [data-reveal] {
-  transition: opacity var(--t-base) ease-out, transform var(--t-base) ease-out;
+  transition: opacity var(--t-reveal) var(--ease-out), transform var(--t-reveal) var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
 }
 
 [data-reveal].is-pending {
   opacity: 0;
-  transform: translateY(12px);
+  transform: translateY(14px);
 }
 
 [data-reveal].is-in {

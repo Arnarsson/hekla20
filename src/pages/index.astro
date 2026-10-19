@@ -3,9 +3,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import PhotoMat from '../components/PhotoMat.astro';
 import FlowDiagram from '../components/FlowDiagram.astro';
 import ProductRail from '../components/ProductRail.astro';
+import ProductCard from '../components/ProductCard.astro';
+import { featuredProducts } from '../data/products';
 import ContactForm from '../components/ContactForm.astro';
 import { site } from '../data/site';
-import { hero, homeDiagram, howWeWork, about, contact } from '../data/home';
+import { hero, homeDiagram, howWeWork, about, contact, productsIntro } from '../data/home';
 ---
 
 <BaseLayout title={null} description={site.description} ogDescription={site.ogDescription} isHome>
@@ -61,8 +63,18 @@ import { hero, homeDiagram, howWeWork, about, contact } from '../data/home';
     <div class="wrap">
       <div class="section-head" data-reveal>
         <span class="label">Products</span>
-        <h2 class="section-head__title">Different ways to <i>work together</i></h2>
-        <p>From a working prototype to a full system, all scoped in the first meeting.</p>
+        <h2 class="section-head__title" set:html={productsIntro.headingHtml} />
+        <p>{productsIntro.intro}</p>
+      </div>
+
+      <ul class="pair" aria-label="Products">
+        {featuredProducts.map((product) => <li><ProductCard product={product} /></li>)}
+      </ul>
+
+      <div class="section-head section-head--sub" data-reveal>
+        <span class="label"><span class="tick" aria-hidden="true"></span>{productsIntro.engineeringLabel}</span>
+        <h3>{productsIntro.engineeringHeading}</h3>
+        <p>{productsIntro.engineeringIntro}</p>
       </div>
       <ProductRail />
     </div>
@@ -123,7 +135,7 @@ import { hero, homeDiagram, howWeWork, about, contact } from '../data/home';
             {site.address.street}<br />
             {site.address.postal}, {site.address.country}
           </address>
-          <a class="contact__email" href={`mailto:${site.email}`}>{site.email}</a>
+          <a class="contact__email hit" href={`mailto:${site.email}`}>{site.email}</a>
         </div>
       </div>
     </div>
@@ -131,6 +143,41 @@ import { hero, homeDiagram, howWeWork, about, contact } from '../data/home';
 </BaseLayout>
 
 <style>
+  /* --- Product pair ------------------------------------------------------
+     The two products side by side, always visible, above the rail of
+     workshops and engineering. Same cards as the rail, no carousel. */
+
+  .pair {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-bottom: 72px;
+  }
+
+  .pair > li {
+    display: flex;
+  }
+
+  .pair > li > :global(.card) {
+    flex: 1;
+  }
+
+  .section-head--sub h3 {
+    font-weight: var(--w-structure);
+    letter-spacing: -0.01em;
+    font-size: clamp(22px, 2.4vw, 28px);
+    line-height: 1.2;
+    margin: 14px 0 10px;
+  }
+
+  @media (max-width: 760px) {
+    .pair {
+      grid-template-columns: 1fr;
+      margin-bottom: 56px;
+    }
+  }
+
   /* --- Hero ------------------------------------------------------------- */
 
   .hero {
@@ -330,9 +377,11 @@ import { hero, homeDiagram, howWeWork, about, contact } from '../data/home';
     border-bottom: 1px solid var(--smoke);
   }
 
-  .contact__email:hover {
-    color: var(--violet);
-    border-bottom-color: var(--violet);
+  @media (hover: hover) and (pointer: fine) {
+    .contact__email:hover {
+      color: var(--violet);
+      border-bottom-color: var(--violet);
+    }
   }
 
   /* --- Responsive ------------------------------------------------------- */
@@ -392,6 +441,128 @@ import { hero, homeDiagram, howWeWork, about, contact } from '../data/home';
 
     .hero__photos :global(.hero__photo) {
       --mat-h: 84px;
+    }
+  }
+
+  /* --- Phones ------------------------------------------------------------
+     Shorter page, bigger targets. The hero CTAs become full-width thumb
+     buttons, the three proof numbers sit in one row, and How we work puts the
+     photo beside the step instead of above it. */
+  @media (max-width: 560px) {
+    .hero {
+      padding: 40px 0 36px;
+    }
+
+    .hero__word {
+      margin-top: 12px;
+    }
+
+    .hero__tagline {
+      margin-bottom: 14px;
+    }
+
+    .hero__lines {
+      font-size: 17px;
+    }
+
+    .hero__ctas {
+      flex-direction: column;
+      gap: 10px;
+      margin: 28px 0 32px;
+    }
+
+    .hero__ctas .btn {
+      text-align: center;
+      min-height: 52px;
+      font-size: 16px;
+    }
+
+    .proof {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border-top: 1px solid var(--smoke);
+    }
+
+    .proof__item {
+      flex-direction: column-reverse;
+      justify-content: flex-end;
+      padding: 14px 10px 0 0;
+    }
+
+    .proof__item + .proof__item {
+      padding-left: 12px;
+      border-left: 1px solid var(--smoke);
+    }
+
+    .proof__num {
+      font-size: 34px;
+    }
+
+    .proof__label {
+      font-size: 10px;
+      letter-spacing: 0.06em;
+      line-height: 1.35;
+      margin-top: 4px;
+    }
+
+    .hero__photos {
+      padding-inline: var(--gutter);
+      margin-top: 30px;
+    }
+
+    .pair {
+      gap: 16px;
+      margin-bottom: 44px;
+    }
+
+    .steps {
+      gap: 26px;
+      margin-top: 28px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      grid-template-areas:
+        'photo num'
+        'photo title'
+        'photo body';
+      grid-template-rows: auto auto 1fr;
+      column-gap: 16px;
+    }
+
+    .step__num {
+      grid-area: num;
+      font-size: 30px;
+    }
+
+    .step :global(.mat--step) {
+      grid-area: photo;
+      margin: 6px 0 0;
+      --mat-h: 112px;
+    }
+
+    .step h3 {
+      grid-area: title;
+      margin-bottom: 4px;
+    }
+
+    .step p {
+      grid-area: body;
+    }
+
+    .about__grid,
+    .contact__grid {
+      gap: 32px;
+    }
+
+    .about__copy p {
+      margin-bottom: 14px;
+    }
+
+    .about :global(.about__photo) {
+      --mat-h: 300px;
     }
   }
 </style>

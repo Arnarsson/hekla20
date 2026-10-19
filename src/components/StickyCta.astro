@@ -1,0 +1,79 @@
+---
+/**
+ * The phone CTA bar on product pages.
+ *
+ * Takes the ticker's slot at the bottom of the screen on phones only, so the
+ * one action the page exists for is always a thumb away. It steps aside
+ * (slides down, no layout shift) while another CTA for the same thing, the
+ * closing band or the footer is on screen.
+ */
+interface Props {
+  href: string;
+  label: string;
+}
+
+const { href, label } = Astro.props;
+---
+
+<div class="sticky-cta" data-sticky-cta>
+  <a href={href} class="sticky-cta__link">
+    <span>{label}</span>
+  </a>
+</div>
+
+<script>
+  import { initStickyCta } from '../scripts/sticky-cta';
+  initStickyCta();
+</script>
+
+<style>
+  .sticky-cta {
+    display: none;
+  }
+
+  @media (max-width: 760px) {
+    .sticky-cta {
+      display: block;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 40;
+      background: var(--black);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      transition: transform var(--t-base) var(--ease);
+    }
+
+    .sticky-cta.is-tucked {
+      transform: translateY(100%);
+    }
+
+    .sticky-cta__link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 56px;
+      padding: 0 var(--gutter);
+      color: var(--paper);
+      font-weight: var(--w-structure);
+      font-size: 16px;
+      text-decoration: none;
+    }
+
+    /* The house slant, once: a violet tick before the label. */
+    .sticky-cta__link::before {
+      content: '';
+      display: inline-block;
+      width: 9px;
+      height: 14px;
+      margin-right: 12px;
+      background: var(--violet);
+      transform: skewX(var(--slant));
+    }
+
+    .sticky-cta__link:focus-visible {
+      outline: 2px solid var(--paper);
+      outline-offset: -6px;
+    }
+  }
+</style>

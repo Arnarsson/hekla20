@@ -113,9 +113,11 @@ import { railProducts } from '../data/products';
     transition: background var(--t-fast), color var(--t-fast);
   }
 
-  .rail__btn:hover {
-    background: var(--black);
-    color: var(--paper);
+  @media (hover: hover) and (pointer: fine) {
+    .rail__btn:hover {
+      background: var(--black);
+      color: var(--paper);
+    }
   }
 
   @media (max-width: 1024px) {
@@ -126,13 +128,34 @@ import { railProducts } from '../data/products';
 
   @media (max-width: 760px) {
     .rail__track {
-      grid-auto-columns: 88%;
+      grid-auto-columns: 86%;
+      gap: 14px;
     }
 
     .rail__controls {
-      flex-direction: column-reverse;
-      align-items: flex-start;
-      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .rail__dots {
+      gap: 0;
+    }
+
+    /* Same 3px bar, inside a 36x44 tap target: full thumb height, and five
+       of them still fit beside the arrows on a 360px screen. */
+    .rail__dots :global(.rail__dot) {
+      width: 36px;
+      height: 44px;
+      padding: 20.5px 5px;
+      background-clip: content-box;
+    }
+
+    .rail__dots :global(.rail__dot[aria-selected='true']) {
+      background-clip: content-box;
+    }
+
+    .rail__btn {
+      width: 44px;
+      height: 44px;
     }
   }
 </style>

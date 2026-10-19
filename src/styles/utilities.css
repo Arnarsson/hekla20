@@ -22,6 +22,18 @@ section {
   }
 }
 
+/* Phones: a tighter vertical rhythm and a 20px gutter, so a page is fewer
+   thumb-flicks long and a line of body copy gets the extra width. */
+@media (max-width: 560px) {
+  :root {
+    --gutter: 20px;
+  }
+
+  section {
+    padding: 52px 0;
+  }
+}
+
 /* --- Marks -------------------------------------------------------------- */
 
 /* 900 Black Italic uppercase is locked to wordmarks. It never sets a sentence. */
@@ -97,9 +109,11 @@ section {
   transition: background var(--t-base), color var(--t-base), border-color var(--t-base);
 }
 
-.btn:hover {
-  background: var(--black);
-  color: var(--paper);
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover {
+    background: var(--black);
+    color: var(--paper);
+  }
 }
 
 .btn--primary {
@@ -108,17 +122,21 @@ section {
   color: var(--white);
 }
 
-.btn--primary:hover {
-  background: var(--black);
-  border-color: var(--black);
-  color: var(--white);
+@media (hover: hover) and (pointer: fine) {
+  .btn--primary:hover {
+    background: var(--black);
+    border-color: var(--black);
+    color: var(--white);
+  }
 }
 
 /* On the dark band, inverting to black would vanish. Invert to paper. */
-.band-dark .btn--primary:hover {
-  background: var(--paper);
-  border-color: var(--paper);
-  color: var(--black);
+@media (hover: hover) and (pointer: fine) {
+  .band-dark .btn--primary:hover {
+    background: var(--paper);
+    border-color: var(--paper);
+    color: var(--black);
+  }
 }
 
 .btn--ink {
@@ -127,13 +145,34 @@ section {
   color: var(--paper);
 }
 
-.btn--ink:hover {
-  background: transparent;
-  color: var(--black);
+@media (hover: hover) and (pointer: fine) {
+  .btn--ink:hover {
+    background: transparent;
+    color: var(--black);
+  }
 }
 
 .btn:active {
   opacity: 0.85;
+  transform: translateY(1px);
+}
+
+/* A larger tap area for small text links, without moving their underline.
+   44px is the minimum comfortable target for a thumb. */
+.hit {
+  position: relative;
+}
+
+.hit::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
 }
 
 /* --- Status chips ------------------------------------------------------- */
@@ -239,4 +278,22 @@ section {
 .section-head p {
   color: var(--ash);
   font-size: 16px;
+}
+
+@media (max-width: 560px) {
+  .section-head {
+    margin-bottom: 28px;
+  }
+
+  .section-head h2 {
+    margin: 12px 0 8px;
+  }
+
+  .band-dark {
+    padding: 76px 0 52px;
+  }
+
+  .btn {
+    padding: 13px 22px;
+  }
 }

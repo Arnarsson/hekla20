@@ -54,4 +54,6 @@
   --t-fast: 180ms;
   --t-base: 200ms;
   --ease: cubic-bezier(0.2, 0, 0, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --t-reveal: 620ms;
 }

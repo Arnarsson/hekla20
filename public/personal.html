@@ -21,11 +21,15 @@ a{color:inherit}
 .wm{font-weight:900;font-style:italic;letter-spacing:-.04em;line-height:1}
 header.top{position:fixed;inset:0 0 auto 0;z-index:30;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(20px,4vw,48px);pointer-events:none}
 header.top>*{pointer-events:auto}
+header.top{transition:opacity .35s ease,transform .5s var(--spring)}
+body.nohdr header.top{opacity:0;transform:translateY(-10px);pointer-events:none}
+body.nohdr header.top>*{pointer-events:none}
 header.top .wm{font-size:22px;text-decoration:none}
 .pill{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14px;text-decoration:none;border:1px solid var(--black);border-radius:999px;padding:9px 16px;background:var(--paper);transition:transform .25s var(--spring),background .2s,color .2s}
 .pill:hover{background:var(--black);color:var(--paper);transform:translateY(-1px)}
 /* story */
-#story{position:relative;height:900vh}
+#story{position:relative;height:600vh}
+@media (min-width:900px){#story{height:640vh}}
 .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
 #dots{position:absolute;inset:0;width:100%;height:100%;z-index:2;touch-action:pan-y}
 .hero{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 clamp(24px,7vw,120px);z-index:3;pointer-events:none}
@@ -50,6 +54,8 @@ header.top .wm{font-size:22px;text-decoration:none}
 .island{position:absolute;left:50%;top:24px;width:118px;height:34px;margin-left:-59px;background:#000;border-radius:20px;z-index:4}
 .screen{width:390px;height:844px;border-radius:52px;overflow:hidden;background:#0b0b0b;position:relative}
 .scroller{will-change:transform}
+.appbar{position:absolute;left:0;top:0;right:0;z-index:2;background:#0b0b0b}
+.appbody{padding-top:79px}
 /* --- his Decisions app, recreated from its own CSS --- */
 .app{color:#f1efea;font-family:Arial,Helvetica,sans-serif;font-size:16px;line-height:1.5;text-align:left}
 .app .topbar{border-bottom:1px solid #262626;display:flex;align-items:center;gap:25px;height:79px;padding:16px 24px 0}
@@ -89,21 +95,25 @@ header.top .wm{font-size:22px;text-decoration:none}
 /* finale */
 .finale{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--paper);opacity:0;pointer-events:none;text-align:center;padding:0 24px}
 .finale.show{opacity:1;pointer-events:auto}
-.big{position:relative;font-size:clamp(84px,24vw,260px);color:var(--black)}
-.big .band{display:block;white-space:nowrap}
-.big .band+.band{position:absolute;inset:0}
-.stop{display:inline-block;width:.2em;height:.2em;border-radius:50%;margin-left:.04em;vertical-align:baseline;background:transparent}
+.big{position:relative;font-size:clamp(84px,21vw,232px);color:var(--black);line-height:1.04;padding:0 .12em}
+.big .band{display:block;white-space:nowrap;will-change:transform}
+.big .band+.band{position:absolute;inset:0;padding:0 .12em}
+.stop{display:inline-block;width:.19em;height:.19em;border-radius:50%;margin-left:.035em;vertical-align:baseline;background:transparent}
 .big.landed .stop{background:var(--violet)}
-.endlines{margin-top:clamp(22px,4vh,40px);font-size:clamp(20px,2.4vw,30px);line-height:1.3;letter-spacing:-.01em}
-.endlines span{display:block;opacity:0;transform:translateY(12px);transition:opacity .5s ease,transform .8s var(--spring)}
+.endlines{margin-top:clamp(20px,3.8vh,40px);font-size:clamp(30px,3.36vw,43px);font-weight:400;line-height:1.28;letter-spacing:-.02em;color:var(--black);white-space:nowrap}
+.endlines span{display:block;opacity:0;transform:translateY(10px);transition:opacity .9s ease,transform 1.1s var(--spring)}
 .endlines span.on{opacity:1;transform:none}
-.endlines span:last-child{font-weight:600}
-.replay{margin-top:28px;background:none;border:0;font:600 13px Inter,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--ash);cursor:pointer;opacity:0;transition:opacity .5s}
+.replay{margin-top:30px;background:none;border:0;font:600 12px Inter,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:var(--ash);cursor:pointer;opacity:0;transition:opacity .6s;padding:10px}
 .replay.on{opacity:1}
-.vfield{position:absolute;inset:0;background:var(--violet);z-index:7;pointer-events:none;clip-path:circle(0 at 50% 50%)}
-.flyer{position:absolute;left:0;top:0;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:var(--violet);z-index:8;opacity:0;pointer-events:none}
+.vdisc{position:absolute;left:0;top:0;border-radius:50%;background:var(--violet);z-index:7;pointer-events:none;opacity:0;will-change:transform;transform-origin:50% 50%}
+.btn .ok,.go .ok{display:none}
+.sent .ok{display:inline}
+.sent .arr{display:none}
+.decision-card .btn-quiet{transition:opacity .3s ease}
+.decision-card.done .btn-quiet{opacity:0}
+.decision-card.done .age{color:#c4b0fb}
 /* sections */
-section.s{padding:clamp(96px,16vh,180px) clamp(24px,7vw,120px);max-width:1280px;margin:0 auto}
+section.s{padding:clamp(64px,10vh,140px) clamp(24px,7vw,120px);max-width:1280px;margin:0 auto}
 .s h3{font-weight:600;font-size:clamp(34px,5vw,64px);letter-spacing:-.03em;line-height:1.02;margin:14px 0 0;max-width:14ch}
 .steps{list-style:none;padding:0;margin:clamp(48px,8vh,88px) 0 0;display:grid;grid-template-columns:1fr;gap:0}
 .steps li{display:grid;grid-template-columns:64px 1fr;gap:4px 18px;padding:28px 0;border-top:1px solid var(--smoke);opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .9s var(--spring)}
@@ -114,7 +124,7 @@ section.s{padding:clamp(96px,16vh,180px) clamp(24px,7vw,120px);max-width:1280px;
 .steps p{margin:0;color:#3a3a3a;font-size:17px;line-height:1.5;max-width:36ch}
 .g i{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--black);top:16px}
 .g i.v{background:var(--violet);width:12px;height:12px;top:14px}
-.g svg{position:absolute;left:0;top:0;width:52px;height:40px;overflow:visible}
+.g svg{position:absolute;inset:0;overflow:visible}
 .in .g1 .v{animation:g1 2.6s var(--spring) infinite}
 @keyframes g1{0%,100%{left:0}50%{left:40px}}
 .in .g1 .p{animation:perk 2.6s ease-in-out infinite}
@@ -165,13 +175,12 @@ footer .wm{color:var(--black);font-size:20px}
    <div class="cap" data-cap="anniv"><div class="k"><b></b>She prepares, unasked</div><h2>She noticed Monday.</h2><p>You would have noticed Sunday night.</p></div>
    <div class="cap" data-cap="arizona"><div class="k"><b></b>She prepares, unasked</div><h2>Your rule. Her legwork.</h2><p>First class, under €10,000. She found the trip that fits.</p></div>
    <div class="cap" data-cap="nda"><div class="k"><b></b>She prepares, unasked</div><h2>Ready before you asked.</h2><p>The NDA is waiting for you. Not the other way round.</p></div>
-   <div class="cap" data-cap="call"><div class="k"><b></b>You make the call</div><h2>Your move.</h2><p>She did the prep. The yes is yours.</p><button class="go" id="goBtn" type="button">Approve drafts <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button></div>
+   <div class="cap" data-cap="call"><div class="k"><b></b>You make the call</div><h2>Your move.</h2><p>She did the prep. The yes is yours.</p><button class="go" id="goBtn" type="button"><span class="lbl">Send flowers</span> <svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg><svg class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg></button></div>
   </div>
 
   <div class="phone-wrap" id="phoneWrap" aria-hidden="true">
    <div class="phone" id="phone"><div class="island"></div>
-    <div class="screen"><div class="scroller" id="scroller"><div class="app">
-     <div class="topbar"><span class="wordmark">HEKLA</span><span class="avatar">C</span></div>
+    <div class="screen"><div class="app appbar"><div class="topbar"><span class="wordmark">HEKLA</span><span class="avatar">C</span></div></div><div class="scroller" id="scroller"><div class="app appbody">
      <div class="ws">
       <div class="ey">Your personal brief <span>/</span> Monday</div>
       <div class="greeting"><h1>Good morning,<br>Christian<span class="accent-period" id="period">.</span></h1><p id="needLine">Nothing needs you yet.</p></div>
@@ -179,12 +188,12 @@ footer .wm{color:var(--black);font-size:20px}
       <div class="cards">
        <article class="decision-card selected" data-card="0">
         <div class="card-top"><div class="eyb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>Personal</div><span class="age">just now</span></div>
-        <div class="card-content"><div><h2>Hey, it's your anniversary on Monday.</h2><p>I've drafted the usual flower order and a table request at Sarah's favourite restaurant. Nothing is booked yet.</p></div></div>
-        <div class="actions"><button class="btn btn-primary" id="appBtn" type="button" tabindex="-1"><span id="appBtnLabel">Approve drafts</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button><button class="btn btn-quiet" type="button" tabindex="-1">Dismiss</button></div>
+        <div class="card-content"><div><h2>Hey, it's your anniversary on Monday.</h2><p>Should I send the usual flowers? I've already booked Sarah's favorite restaurant.</p></div></div>
+        <div class="actions"><button class="btn btn-primary" id="appBtn" type="button" tabindex="-1"><span id="appBtnLabel">Send flowers</span><svg class="arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg><svg class="ok" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5l5 5L20 6.5"/></svg></button><button class="btn btn-quiet" type="button" tabindex="-1">Dismiss</button></div>
        </article>
        <article class="decision-card" data-card="1">
         <div class="card-top"><div class="eyb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/></svg>Travel</div><span class="age">2h ago</span></div>
-        <div class="card-content"><div><h2>Arizona, ready to book.</h2><p>Five nights. First class. Within your rule.</p><div class="fare">€9,420<span>Including tax</span></div></div><img class="card-thumb" src="/media/personal/arizona.jpg" alt="" width="78" height="85"></div>
+        <div class="card-content"><div><h2>Arizona, taken care of.</h2><p>Five nights. First class. Within your rule.</p><div class="fare">€9,420<span>Including tax</span></div></div><img class="card-thumb" src="/media/personal/arizona.jpg" alt="" width="78" height="85"></div>
         <div class="actions"><button class="btn btn-primary" type="button" tabindex="-1">Review<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></button><button class="btn btn-quiet" type="button" tabindex="-1">Dismiss</button></div>
        </article>
        <article class="decision-card" data-card="2">
@@ -199,8 +208,7 @@ footer .wm{color:var(--black);font-size:20px}
    </div>
   </div>
 
-  <div class="vfield" id="vfield"></div>
-  <div class="flyer" id="flyer"></div>
+  <div class="vdisc" id="vdisc"></div>
   <div class="finale" id="finale">
    <div class="big wm" id="big" aria-label="HEKLA."></div>
    <div class="endlines"><span>She connects the dots.</span><span>You make the call.</span></div>
@@ -303,8 +311,10 @@ function layout(){
  while(rem.length){let bi=0,bd=1e9;rem.forEach((j,k)=>{const dd=(D[j].hx-px)**2+(D[j].hy-py)**2;if(dd<bd){bd=dd;bi=k}});const j=rem.splice(bi,1)[0];tour.push(j);px=D[j].hx;py=D[j].hy;}
  ntSet=new Set(tour);
  // constellation box: right of the text on desktop, below the text on mobile
- const bw = mobile ? Math.min(W*.76,420) : Math.min(W*.35,500), bh = bw*(mobile?.62:.56);
- const bx = (mobile?W/2:W*.72)-bw/2, by = (mobile?H*.6:H*.5)-bh/2;
+ const bw = mobile ? Math.min(W*.8,420) : Math.min(W*.35,500), bh = bw*(mobile?.62:.56);
+ let by = (mobile?H*.6:H*.5)-bh/2;
+ if(mobile){ const cc=caps.find(c=>c.dataset.cap==='connect'); const cb=capsEl.offsetTop+cc.offsetTop+cc.offsetHeight; by=Math.min(by, cb+30); }
+ const bx = (mobile?W/2:W*.72)-bw/2;
  const bp=(u,v)=>[bx+u*bw,by+v*bh];
  conPts=CON.map(c=>bp(c.u,c.v)); conStart=conPts[0]; conEnd=bp(...CON_END);
  const pool=[...tour, ...[...Array(N).keys()].filter(i=>!ntSet.has(i))];
@@ -318,6 +328,7 @@ function layout(){
  D.forEach(d=>{d.tx=d.hx; d.ty=d.hy;});
  conIdx.forEach((j,k)=>{D[j].tx=per[k][0]; D[j].ty=per[k][1];});
  if(V.x.x===0){V.x.x=V.x.t=V.rest[0];V.y.x=V.y.t=V.rest[1];}
+ measureCards();
 }
 function perimPt(u,x,y,w,h,r){ // walk clockwise from top-left
  if(u<w) return [x+clamp(u,r*.6,w-r*.6),y]; u-=w;
@@ -332,13 +343,20 @@ function tourPt(u){ if(!tour.length) return V.rest.slice(); const pts=[V.rest,..
  return [f(p0[0],p1[0],p2[0],p3[0]),f(p0[1],p1[1],p2[1],p3[1])]; }
 
 // timeline (fractions of story progress)
-const T={heroOut:[.03,.09], notice:[.09,.23], gather:[.23,.27], draw:[.27,.365], fold:[.375,.44], phone:.435, cards:[.47,.56,.64], back:.72, call:.74, auto:.955};
+const T={heroOut:[.02,.08], notice:[.08,.215], gather:[.215,.26], draw:[.26,.375], fold:[.385,.455], phone:.45, cards:[.485,.595,.705], back:.805, call:.82, auto:.965};
 let P=0, Ps=0, finale=false, finT=0, last=performance.now(), tapped=false;
-const phoneS=S(0,140,13), tilt=S(0,90,11), scrollS=S(0,120,16), cardS=cards.map(()=>S(0,200,15)), ringOn={v:false};
+const phoneS=S(0,140,13), tilt=S(0,90,11), scrollS=S(0,120,16), cardS=cards.map(()=>S(0,260,13)), ringOn={v:false};
+const pushS=S(0,110,12), mxS=S(0,40,12), myS=S(0,40,12); let focusI=0; const CT=cards.map(()=>({t:0,h:0,b:0}));
+function measureCards(){ cards.forEach((c,i)=>{ CT[i].t=c.offsetTop; CT[i].h=c.offsetHeight; CT[i].b=c.offsetTop+c.offsetHeight; }); TXT.forEach(o=>{ o.t=o.el.offsetTop; o.b=o.el.offsetTop+o.el.offsetHeight; }); }
+// app text that must never be sliced by the fixed app bar (the notch zone): fully visible or fully gone
+const HDR=79; const TXT=['.app .ey','.app .greeting h1','#needLine','.app .tabs'].map(q=>({el:document.querySelector(q),t:0,b:0}));
+function clearText(off){ // allowed offsets: the bar's edge falls in a gap between text blocks, never through one
+ const ok=[[-1e9, TXT[0].t-HDR-4]]; for(let k=0;k<TXT.length;k++){ const lo=TXT[k].b-HDR, hi = k+1<TXT.length ? TXT[k+1].t-HDR-4 : 1e9; if(hi>=lo) ok.push([lo,hi]); }
+ let best=off, bd=1e9; for(const [lo,hi] of ok){ const c=Math.min(Math.max(off,lo),hi), d=Math.abs(c-off); if(d<bd){bd=d;best=c;} } return Math.max(0,best); }
+let fillOn=false, hdrBack=false, hdrHidden=false;
 function progress(){ const r=story.getBoundingClientRect(); return clamp(-r.top/(r.height-H)); }
 let lastCap='', lastNeed=-1;
 function setCap(name){ if(name===lastCap) return; lastCap=name; caps.forEach(c=>c.classList.toggle('on',c.dataset.cap===name)); }
-function cardOffset(i){ const c=cards[i]; return c.offsetTop + c.offsetHeight; }
 
 function frame(now){
  const dt=Math.min(.033,(now-last)/1000); last=now;
@@ -348,7 +366,7 @@ function frame(now){
  const ho=seg(p,...T.heroOut); hero.style.opacity=1-ho; hero.style.transform=`translateY(${-ho*40}px)`;
  // captions
  let cap='';
- if(!finale){
+ if(!fin.classList.contains('show')){
   if(p>=T.notice[0]+.01&&p<T.gather[0]+.01) cap='notice'; else if(p>=T.gather[0]+.01&&p<T.phone+.03) cap='connect';
   else if(p>=T.cards[0]&&p<T.cards[1]) cap='anniv'; else if(p>=T.cards[1]&&p<T.cards[2]) cap='arizona'; else if(p>=T.cards[2]&&p<T.call) cap='nda'; else if(p>=T.call) cap='call';
  }
@@ -406,7 +424,7 @@ function frame(now){
  cx.globalAlpha=1;
  // labels: tiny grey Inter, real details
  const labA = dotFade*seg(ga,.35,1)*(1-seg(fo,0,.3));
- if(labA>0){ const fs=mobile?11:13; cx.font=`500 ${fs}px Inter, -apple-system, Helvetica, Arial, sans-serif`; cx.textAlign='center'; cx.textBaseline='alphabetic';
+ if(labA>0){ const fs=mobile?13:13; cx.font=`500 ${fs}px Inter, -apple-system, Helvetica, Arial, sans-serif`; cx.textAlign='center'; cx.textBaseline='alphabetic';
   conIdx.forEach((j,k)=>{ const d=D[j], c=CON[k], [x,y]=pos[j]; const lit=d.reached?1:0; const w=cx.measureText(c.l).width;
     const lx=clamp(x,w/2+10,W-w/2-10), ly=c.up? y-rI-(mobile?9:11) : y+rI+fs+(mobile?5:7);
     cx.globalAlpha=labA*(lit?1:.42); cx.fillStyle=lit?'#3a3a3a':'#6b6b6b'; cx.fillText(c.l,lx,ly); });
@@ -416,86 +434,134 @@ function frame(now){
  if(vAlpha>0 && !finale){ const vx=V.x.v, vy=V.y.v, sp=Math.hypot(vx,vy), st=Math.min(.45,sp/2200), ang=Math.atan2(vy,vx);
    const breathe = (p<T.notice[0]&&!RM)?1+Math.sin(t*2.2)*.06:1; const r=(mobile?8:10)*breathe*(fo>0?lerp(1,.55,fo):1)*Math.max(.5,vpop.x);
    cx.save(); cx.translate(V.x.x,V.y.x); cx.rotate(ang); cx.globalAlpha=vAlpha; cx.fillStyle=VIO; cx.beginPath(); cx.ellipse(0,0,r*(1+st),r*(1-st*.6),0,0,6.283); cx.fill(); cx.restore(); cx.globalAlpha=1; }
- // phone
+ // phone: idle float, scroll-eased 3D tilt, cursor lean (desktop), camera push into each card
  const tl = step(Object.assign(tilt,{t:p>=T.phone+.02?1:0}),dt);
- const bob = RM?0:Math.sin(t*1.1)*6*tl;
  pw.style.opacity = clamp(ph*1.4);
  const sc = lerp(.94,1,ph);
- const ry = (mobile?-7:-11)*tl, rx=(mobile?5:7)*tl, rz=(mobile?1.5:2.5)*tl;
- if(!finale) phone.style.transform=`translateY(${bob}px) perspective(2400px) rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${sc})`;
+ const pk = seg(p,T.phone,T.call);            // 0 -> 1 across the phone beats: the tilt relaxes as you scroll
+ // which card has focus, and how pushed-in the camera wants to be (scroll envelope, then a spring for the elastic feel)
+ const ends_=[T.cards[1],T.cards[2],T.back]; let fi=-1, env=0;
+ for(let i=0;i<3;i++){ const a0=T.cards[i], a1=ends_[i]; if(p>=a0&&p<a1){ fi=i; env=Math.min(seg(p,a0+.004,a0+.026), 1-seg(p,a1-.028,a1-.006)); } }
+ if(fi>=0) focusI=fi;
+ pushS.t = finale?0:env; const push=step(pushS,dt);
+ if(mouse && !mobile && !RM){ mxS.t=clamp((mouse[0]/W-.5)*2,-1,1); myS.t=clamp((mouse[1]/H-.5)*2,-1,1); } else { mxS.t=0; myS.t=0; }
+ const mx=step(mxS,dt), my=step(myS,dt);
+ const calm = 1-.6*clamp(push);
+ const idle = RM?0:1;
+ const bob = Math.sin(t*.85)*7*tl*idle*(1-.5*clamp(push));
+ const ry = ((mobile?lerp(-10,-4,pk):lerp(-17,-7,pk)) + Math.sin(t*.55)*.9*idle + mx*4.5)*tl*calm;
+ const rx = ((mobile?lerp(7,3,pk):lerp(10,4,pk)) + Math.cos(t*.7)*.7*idle - my*3.5)*tl*calm;
+ const rz = (mobile?lerp(2,.8,pk):lerp(3,1,pk))*tl*calm;
+ if(!finale) phone.style.transform=`translateY(${bob}px) perspective(2200px) rotateX(${rx}deg) rotateY(${ry}deg) rotateZ(${rz}deg) scale(${sc})`;
  pw.style.pointerEvents = (p>=T.call&&!finale)?'auto':'none';
- // cards arrive
+ // cards arrive with a springy overshoot
  let need=0;
  cards.forEach((c,i)=>{ const on=p>=T.cards[i]; if(on) need++; const a=step(Object.assign(cardS[i],{t:on?1:0}),dt);
-   c.style.opacity=clamp(a*1.3); c.style.transform=`translate(${(1-a)*70}px,${(1-a)*-10}px) scale(${.92+.08*a}) rotate(${(1-a)*3}deg)`; });
- if(need!==lastNeed){ lastNeed=need; $('#needCount').textContent=need; $('#needLine').textContent=['Nothing needs you yet.','One thing needs your decision.','Two things need your decision.','Three things need your decision.'][need]; }
- // screen scroll target
+   c.style.opacity=clamp(a*1.6); c.style.transform=`translate(${(1-a)*64}px,${(1-a)*18}px) scale(${.86+.14*a}) rotate(${(1-a)*2.5}deg)`; });
+ if(need!==lastNeed){ lastNeed=need; $('#needCount').textContent=need; $('#needLine').textContent=['Nothing needs you yet.','One thing needs your decision.','Two things need your decision.','Three things need your decision.'][need]; measureCards(); }
+ // screen scroll target: new card at the bottom of the screen, then centred while the camera is in on it
  let off=0;
- if(p>=T.cards[0]) off=cardOffset(0)-L.vis+28;
- if(p>=T.cards[1]) off=cardOffset(1)-L.vis+28;
- if(p>=T.cards[2]) off=cardOffset(2)-L.vis+28;
- if(p>=T.back) off=cards[0].offsetTop - (mobile?18:230);
- off=Math.max(0,off);
- scrollS.t=off; scroller.style.transform=`translateY(${-step(scrollS,dt)}px)`;
+ if(fi>=0 || p>=T.cards[0]){ const i=fi>=0?fi:2; const bottom=CT[i].b-L.vis+28, mid=CT[i].t+CT[i].h/2-L.vis*(mobile?.42:.5); off=lerp(bottom,mid,clamp(env)); }
+ if(p>=T.back) off=mobile? CT[0].t-92 : 0;
+ off=clearText(Math.max(0,off));
+ scrollS.t=off; const so=step(scrollS,dt); scroller.style.transform=`translateY(${-so}px)`;
+ // the camera push: scale the whole phone up around the focused card and pan it toward the centre of the shot
+ { const PH=868*L.s, M=40, zAmt = mobile? .09 : clamp((H-2*M)/PH-1, 0, .17); const z=1+clamp(push,-.1,1.15)*zAmt; const fc=CT[focusI]||CT[0];
+   const fx=207, fy=12+fc.t+fc.h/2-so; const X=L.left+L.s*fx, Y=L.top+L.s*fy;
+   const Xt = mobile? X : L.cx+W*.015, Yt = mobile? lerp(Y,(L.top+H)/2,.5) : H*.5;
+   const pp=clamp(push,0,1.1); const tx=lerp(X,Xt,pp)-L.s*z*fx, ty0=lerp(Y,Yt,pp)-L.s*z*fy, ty = mobile? ty0 : Math.min(Math.max(ty0, M), Math.max(M, H-M-PH*z));
+   pw.style.transform=`translate(${tx.toFixed(2)}px,${ty.toFixed(2)}px) scale(${(L.s*z).toFixed(4)})`; }
  const ringWant=p>=T.call&&!finale; if(ringWant!==ringOn.v){ringOn.v=ringWant; $('#appBtn').classList.toggle('ring',ringWant);}
  // auto finale if visitor scrolls past without tapping
  if(!finale && p>=T.auto) runFinale(null);
  if(finale && P<T.call-.02) resetFinale();
+ // the site header steps aside for the violet fill and the end frame; back on replay or when the visitor scrolls on
+ { const hide = fillOn && !hdrBack && story.getBoundingClientRect().bottom > H-40; if(hide!==hdrHidden){ hdrHidden=hide; document.body.classList.toggle('nohdr',hide); } }
  requestAnimationFrame(frame);
 }
 
 // ---------- finale ----------
-const vf=$('#vfield'), fly=$('#flyer'), fin=$('#finale'), big=$('#big'), ends=[...document.querySelectorAll('.endlines span')], replay=$('#replay');
+const disc=$('#vdisc'), fin=$('#finale'), big=$('#big'), ends=[...document.querySelectorAll('.endlines span')], replay=$('#replay');
 const BANDS=7;
-function buildMark(){ big.innerHTML=Array.from({length:BANDS},(_,i)=>{const a=(i*100/BANDS).toFixed(3), b=((BANDS-1-i)*100/BANDS).toFixed(3); return `<span class="band" aria-hidden="true" style="clip-path:inset(${a}% -20% ${b}% -20%)">HEKLA<span class="stop"></span></span>`}).join(''); }
+function buildMark(){ big.innerHTML=Array.from({length:BANDS},(_,i)=>{const a=(i*100/BANDS).toFixed(3), b=((BANDS-1-i)*100/BANDS).toFixed(3); return `<span class="band" aria-hidden="true" style="clip-path:inset(${a}% -30% ${b}% -30%)">HEKLA<span class="stop"></span></span>`}).join(''); }
 buildMark();
-const timers=[];
+const timers=[]; let runId=0;
+const wait=ms=>new Promise(r=>setTimeout(r,RM?0:ms));
 function later(ms,f){timers.push(setTimeout(f,RM?0:ms));}
 function tween(ms,fn,ease=eio){ return new Promise(res=>{ if(RM){fn(1);res();return} const t0=performance.now(); const tick=n=>{const k=clamp((n-t0)/ms); fn(ease(k)); if(k<1) requestAnimationFrame(tick); else res();}; requestAnimationFrame(tick); }); }
+// critically-underdamped spring run as a 0->1 curve (elastic, one soft overshoot)
+function springRun(ms,fn,k=210,d=15){ return new Promise(res=>{ if(RM){fn(1);res();return}
+  const w0=Math.sqrt(k), z=Math.min(.95,d/(2*w0)), wd=w0*Math.sqrt(1-z*z), t0=performance.now();
+  const x=t=>1-Math.exp(-z*w0*t)*(Math.cos(wd*t)+(z*w0/wd)*Math.sin(wd*t));
+  const tick=n=>{ const t=(n-t0)/1000, done=t*1000>=ms; fn(done?1:x(t)); if(!done) requestAnimationFrame(tick); else res(); }; requestAnimationFrame(tick); }); }
+const backOut=(t,c=1.25)=>1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2);
+let R0=0;
+function discAt(x,y,sx,sy=sx){ disc.style.transform=`translate(${x-R0}px,${y-R0}px) scale(${sx},${sy})`; }
+function finalState(){
+ fillOn=true; fin.classList.add('show'); pw.style.opacity=0; cv.style.opacity=0; disc.style.opacity=0;
+ big.querySelectorAll('.band').forEach(x=>{x.style.opacity=1;x.style.transition='none';x.style.transform='none'});
+ big.classList.add('landed'); ends.forEach(e=>e.classList.add('on')); replay.classList.add('on');
+}
 async function runFinale(srcEl){
- if(finale) return; finale=true; setCap('');
- const sr=stage.getBoundingClientRect(); const b=$('#appBtn'); const br=b.getBoundingClientRect();
+ if(finale) return; finale=true; fillOn=true; const id=++runId; const live=()=>id===runId&&finale;
+ const appB=$('#appBtn'), card=cards[0], go=$('#goBtn');
+ const src = srcEl || appB;
+ // 1 · the tap: press, then a small true confirmation on the card
+ appB.classList.remove('ring'); ringOn.v=true;
+ if(!RM) src.animate([{transform:'scale(1)'},{transform:'scale(.9)',offset:.28},{transform:'scale(1.045)',offset:.66},{transform:'scale(1)'}],{duration:460,easing:'cubic-bezier(.3,.7,.4,1)'});
+ await wait(120); if(!live()) return;
+ $('#appBtnLabel').textContent='Sent'; appB.classList.add('sent'); card.classList.add('done'); card.querySelector('.age').textContent='Sent ✓';
+ go.classList.add('sent'); go.querySelector('.lbl').textContent='Sent';
+ if(RM){ finalState(); return; }
+ await wait(520); if(!live()) return;
+ // 2 · violet grows out of the tapped button and fills the screen, elastic
+ const sr=stage.getBoundingClientRect(), br=src.getBoundingClientRect();
  const ox=br.left-sr.left+br.width/2, oy=br.top-sr.top+br.height/2;
- // press
- b.classList.remove('ring'); b.animate?.([{transform:'scale(1)'},{transform:'scale(.9)'},{transform:'scale(1.06)'},{transform:'scale(1)'}],{duration:RM?1:420,easing:'ease-out'});
- $('#appBtnLabel').textContent='Approved';
- await new Promise(r=>setTimeout(r,RM?0:380));
- const R=Math.hypot(Math.max(ox,W-ox),Math.max(oy,H-oy))+10;
- await tween(560,k=>{vf.style.clipPath=`circle(${k*R}px at ${ox}px ${oy}px)`},t=>t*t*(3-2*t));
- // under the violet: swap scene
+ R0=Math.ceil(Math.hypot(Math.max(ox,W-ox),Math.max(oy,H-oy)))+4;
+ disc.style.width=disc.style.height=(2*R0)+'px';
+ const s0=(br.height/2)/R0; discAt(ox,oy,s0); disc.style.opacity=1; fillOn=true;
+ await tween(640,k=>discAt(ox,oy,lerp(s0,1,k)),t=>backOut(t,1.1)); if(!live()) return;
+ // under the violet: swap to the paper scene
+ setCap('');
  fin.classList.add('show'); pw.style.opacity=0; cv.style.opacity=0;
  big.classList.remove('landed'); ends.forEach(e=>e.classList.remove('on')); replay.classList.remove('on');
- const bands=[...big.querySelectorAll('.band')]; bands.forEach(x=>{x.style.opacity=0});
- const stop=big.querySelector('.band .stop').getBoundingClientRect();
- const tx=stop.left-sr.left+stop.width/2, ty=stop.top-sr.top+stop.height/2, tr=stop.width/2;
- const cxp=W/2, cyp=H/2;
- await tween(520,k=>{const r=lerp(R,14,k), x=lerp(ox,cxp,k), y=lerp(oy,cyp,k); vf.style.clipPath=`circle(${r}px at ${x}px ${y}px)`},t=>1-Math.pow(1-t,3));
- // hand over to flyer dot
- vf.style.clipPath='circle(0 at 50% 50%)';
- fly.style.opacity=1; fly.style.transform=`translate(${cxp}px,${cyp}px) scale(1.4)`;
- // glitch in
- glitchIn(bands);
- await new Promise(r=>setTimeout(r,RM?0:560));
- // fly to the full stop on an arc, then squash
- const sx=cxp, sy=cyp, s1=tr*2/20;
- await tween(620,k=>{const x=lerp(sx,tx,k), y=lerp(sy,ty,k)-Math.sin(k*Math.PI)*Math.min(140,H*.16); fly.style.transform=`translate(${x}px,${y}px) scale(${lerp(1.4,s1,k)})`},t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2);
- fly.animate?.([{transform:`translate(${tx}px,${ty}px) scale(${s1*1.35},${s1*.7})`},{transform:`translate(${tx}px,${ty}px) scale(${s1*.9},${s1*1.12})`},{transform:`translate(${tx}px,${ty}px) scale(${s1})`}],{duration:RM?1:360,easing:'ease-out'});
- await new Promise(r=>setTimeout(r,RM?0:360));
- big.classList.add('landed'); fly.style.opacity=0;
- later(250,()=>ends[0].classList.add('on')); later(900,()=>ends[1].classList.add('on')); later(1600,()=>replay.classList.add('on'));
+ const bands=[...big.querySelectorAll('.band')]; bands.forEach(x=>{x.style.transition='none';x.style.opacity=0;x.style.transform='none'});
+ const st=big.querySelector('.band .stop').getBoundingClientRect();
+ const tx=st.left-sr.left+st.width/2, ty=st.top-sr.top+st.height/2, tr=st.width/2;
+ const em=parseFloat(getComputedStyle(big).fontSize);
+ const hx=tx, hy=ty-em*.62; const sd=tr/R0, lnd=Math.log(sd);
+ await wait(90); if(!live()) return;
+ // 3 · collapse into one violet dot, elastic, hovering where the full stop will be
+ let glitched=false;
+ await springRun(820,k=>{ const s=Math.exp(lnd*k); discAt(lerp(ox,hx,clamp(k)),lerp(oy,hy,clamp(k)),s);
+   if(!glitched && k>.93){ glitched=true; glitchIn(bands,em); } },150,14); if(!live()) return;
+ if(!glitched) glitchIn(bands,em);
+ await wait(430); if(!live()) return;
+ // 4 · the dot drops in as the full stop, with a little bounce
+ await tween(260,k=>discAt(hx,lerp(hy,ty,k),sd*(1-k*.06),sd*(1+k*.14)),t=>t*t); if(!live()) return;
+ const bounce=[[1.38,.66,0],[.9,1.14,-.16],[1.06,.95,0],[.98,1.02,-.03],[1,1,0]];
+ for(let i=0;i<bounce.length;i++){ const [a,b2,dy]=bounce[i], p0=i?bounce[i-1]:[0.94,1.14,0];
+   await tween(i?110:70,k=>discAt(hx,ty+lerp(p0[2],dy,k)*em*.3+ (1-lerp(p0[1],b2,k))*tr*.5,sd*lerp(p0[0],a,k),sd*lerp(p0[1],b2,k)),t=>1-(1-t)*(1-t)); if(!live()) return; }
+ big.classList.add('landed'); disc.style.opacity=0;
+ // 5 · his line, quietly
+ later(380,()=>ends[0].classList.add('on')); later(1050,()=>ends[1].classList.add('on')); later(1900,()=>replay.classList.add('on'));
 }
-function glitchIn(bands){
+// 7-band glitch-in: each band starts knocked sideways, flickers twice, then snaps home on the snap curve
+function glitchIn(bands,em){
  if(RM){bands.forEach(b=>{b.style.opacity=1;b.style.transform='none'});return}
- const t0=performance.now(), dur=520; let lastT=0;
- const fr=n=>{ const k=(n-t0)/dur; if(k>=1){ bands.forEach(b=>{b.style.opacity=1;b.style.transition='transform .16s cubic-bezier(.05,.9,.1,1)';b.style.transform='translateX(0)'}); setTimeout(()=>bands.forEach(b=>b.style.transition='none'),180); return; }
-  if(n-lastT>40+Math.random()*20){ lastT=n; const amp=(1-k)*0.18*big.offsetHeight; bands.forEach((b,i)=>{ b.style.transition='none'; const on=Math.random()<lerp(.35,1,k); b.style.opacity=on?1:0; b.style.transform=`translateX(${Math.trunc((Math.random()*2-1)*amp)}px)`; }); }
-  requestAnimationFrame(fr); };
- requestAnimationFrame(fr);
+ const amps=[.22,-.34,.12,-.18,.3,-.1,.2], order=[3,0,5,2,6,1,4];
+ bands.forEach((b,i)=>{ b.style.transition='none'; b.style.opacity=(i%3===1)?0:1; b.style.transform=`translateX(${Math.round(amps[i]*em)}px)`; });
+ const j1=setTimeout(()=>bands.forEach((b,i)=>{ b.style.opacity=1; b.style.transform=`translateX(${Math.round(-amps[(i+2)%7]*em*.7)}px)`; }),70);
+ const j2=setTimeout(()=>bands.forEach((b,i)=>{ b.style.transform=`translateX(${Math.round(amps[(i+4)%7]*em*.45)}px)`; }),140);
+ const j3=setTimeout(()=>bands.forEach((b,i)=>{ b.style.transition=`transform .62s cubic-bezier(.05,.9,.1,1) ${order[i]*22}ms`; b.style.transform='translateX(0)'; }),200);
+ timers.push(j1,j2,j3);
 }
-function resetFinale(){ finale=false; timers.splice(0).forEach(clearTimeout); fin.classList.remove('show'); vf.style.clipPath='circle(0 at 50% 50%)'; fly.style.opacity=0; pw.style.opacity=1; cv.style.opacity=1; $('#appBtnLabel').textContent='Approve drafts'; }
-$('#goBtn').addEventListener('click',()=>runFinale());
-$('#appBtn').addEventListener('click',()=>runFinale());
-replay.addEventListener('click',()=>{ const r=story.getBoundingClientRect(); scrollTo({top:scrollY+r.top, behavior:RM?'auto':'smooth'}); });
+function resetFinale(){ finale=false; fillOn=false; hdrBack=false; runId++; timers.splice(0).forEach(clearTimeout); fin.classList.remove('show'); disc.style.opacity=0; pw.style.opacity=1; cv.style.opacity=1;
+ $('#appBtnLabel').textContent='Send flowers'; $('#appBtn').classList.remove('sent'); cards[0].classList.remove('done'); cards[0].querySelector('.age').textContent='just now';
+ const go=$('#goBtn'); go.classList.remove('sent'); go.querySelector('.lbl').textContent='Send flowers'; ringOn.v=false; }
+$('#goBtn').addEventListener('click',e=>runFinale(e.currentTarget).catch(x=>console.error('fin',x.stack)));
+$('#appBtn').addEventListener('click',e=>runFinale(e.currentTarget).catch(x=>console.error('fin',x.stack)));
+replay.addEventListener('click',()=>{ hdrBack=true; const r=story.getBoundingClientRect(); scrollTo({top:scrollY+r.top, behavior:RM?'auto':'smooth'}); });
 // reveal steps
 const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} }),{threshold:.3});
 document.querySelectorAll('.steps li').forEach((li,i)=>{li.style.transitionDelay=(i*90)+'ms'; io.observe(li)});

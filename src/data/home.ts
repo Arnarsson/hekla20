@@ -15,7 +15,7 @@ export const hero = {
   tagline: 'Yes, we build AI.',
   lines: ['Engineering firm in Copenhagen.', 'Workers that run inside your company, 24/7.'],
   ctas: [
-    { href: '#contact', label: '→ Book a conversation', variant: 'primary' as const },
+    { href: '#contact', label: '→ Start a conversation', variant: 'primary' as const },
     { href: '#products', label: 'See what we build', variant: 'plain' as const },
   ],
   proof: [
@@ -44,6 +44,18 @@ export const homeDiagram = {
     { stamp: '00:00:09', label: 'Your systems', sub: 'crm · calendar · erp · shop' },
     { stamp: 'T+handover', label: 'Owned by you', sub: 'code · docs · no lock-in', dashedIn: true },
   ],
+};
+
+/**
+ * The products section. Two defined products first, as a pair, then the
+ * engineering and workshops rail beneath them.
+ */
+export const productsIntro = {
+  headingHtml: 'Two products. <i>Plus engineering</i>',
+  intro: 'Pick the one that sounds like your problem. Both are set up around how you actually work, and both start with a conversation.',
+  engineeringLabel: 'Engineering and workshops',
+  engineeringHeading: 'Or we build around your operations',
+  engineeringIntro: 'From a one-day workshop to a full system, all scoped in the first meeting.',
 };
 
 export const howWeWork = {
@@ -97,6 +109,6 @@ export const about = {
 };
 
 export const contact = {
-  heading: "What is eating your team's week?",
-  intro: 'Tell us and we will see if we can eat it off your plate.',
+  heading: 'What is eating your week?',
+  intro: 'For you, or for your team. Tell us and we will see if we can eat it off your plate.',
 };
