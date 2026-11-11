@@ -2,6 +2,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "redirects": [
+    { "source": "/personal-unit", "destination": "/personal-assistant", "permanent": true },
     { "source": "/consultancy", "destination": "/", "permanent": true },
     { "source": "/ventures", "destination": "/", "permanent": true },
     { "source": "/rally", "destination": "/", "permanent": true },

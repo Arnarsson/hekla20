@@ -44,6 +44,13 @@ const enquiryLabel = product.enquiry?.cta ?? 'Start a conversation';
     {product.price && <span class="card__price">{product.price}</span>}
     <a href={enquiryHref(product.slug)} class="card__link">&rarr; {enquiryLabel}</a>
     {
+      product.preview && (
+        <a href={product.preview.href} class="card__more">
+          {product.preview.label} &rarr;
+        </a>
+      )
+    }
+    {
       product.page && (
         <a href={`/${product.slug}`} class="card__more">
           Read more about {product.name} &rarr;
