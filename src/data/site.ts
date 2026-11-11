@@ -28,7 +28,7 @@ export const site = {
  * front page.
  */
 export const nav = [
-  { href: '/personal-unit', label: 'Personal Unit' },
+  { href: '/personal-assistant', label: 'Personal Assistant 2.0' },
   { href: '/lead-agent', label: 'Lead Agent' },
   { href: '/#products', label: 'All products' },
   { href: '/#about', label: 'About' },
@@ -43,7 +43,7 @@ export const footerColumns = [
   {
     heading: 'Products',
     links: [
-      { href: '/personal-unit', label: 'Personal Unit' },
+      { href: '/personal-assistant', label: 'Personal Assistant 2.0' },
       { href: '/lead-agent', label: 'Lead Agent' },
       { href: '/undo', label: 'UNDO' },
       { href: '/workshops', label: 'Workshops' },

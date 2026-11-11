@@ -140,6 +140,11 @@ export interface Product {
   card: Media;
   /** Products in the rail have a card; only some have a full page. */
   page: ProductPage | null;
+  /**
+   * A standalone preview page for this product, linked from its card and
+   * from the top of its detail page.
+   */
+  preview?: { href: string; label: string };
   /** Keep out of the front page rail. UNDO is sold on its own site. */
   railHidden?: boolean;
   /**
@@ -169,14 +174,17 @@ export const enquiryHref = (slug: string) => `/?product=${slug}#contact`;
 
 export const productsFactsNote = factsNote;
 
+/** The HEKLA Personal Assistant 2.0 concept preview, served as-is from public/personal.html. */
+const personalPreview = { href: '/personal', label: 'See the 2.0 preview' };
+
 export const products: Product[] = [
   {
-    slug: 'personal-unit',
-    name: 'Personal Unit',
+    slug: 'personal-assistant',
+    name: 'Personal Assistant 2.0',
     isWordmark: true,
     featured: true,
     fitLine: 'I need help keeping track of my work, information and relationships.',
-    status: { kind: 'scoped', label: 'Configured per person' },
+    status: { kind: 'new', label: 'Most requested' },
     oneliner:
       'A personal AI assistant set up around one person\u2019s mail, calendar and commitments, so you stop being the one who has to remember everything.',
     bullets: [
@@ -185,27 +193,28 @@ export const products: Product[] = [
       'Prepares drafts. You decide what gets sent',
     ],
     enquiry: {
-      cta: 'Talk about your Personal Unit',
+      cta: 'Talk about your Personal Assistant',
       prompt: 'What do you keep having to remember or chase? Which sources would it involve (email, calendar, documents), and what would a good week with it look like?',
     },
+    preview: personalPreview,
     card: { kind: 'image', src: stepHandoverYuriy, alt: 'Two men reflected in the polished bodywork of a car on a street', monogram: 'paper' },
     page: {
-      title: 'Personal Unit, a personal AI assistant',
+      title: 'HEKLA Personal Assistant 2.0',
       metaDescription:
-        'Personal Unit is a personal AI assistant configured around your mail, calendar and commitments, on an installation of its own. Ask across the sources you connect, keep track of what you promised, and get drafts you approve.',
+        'Personal Assistant 2.0 is a personal AI assistant configured around your mail, calendar and commitments, on an installation of its own. Ask across the sources you connect, keep track of what you promised, and get drafts you approve.',
       headingHtml: 'Less <span class="erupt">remembering</span>.<br>More getting things done.',
       leadHtml:
-        '<span class="brandname">Personal Unit</span> is a personal AI assistant, set up around one person\u2019s mail, calendar and commitments. It finds what you need, keeps track of what you promised and prepares what comes next, so you stop briefing a chatbot from scratch every time.',
+        '<span class="brandname">Personal Assistant 2.0</span> is a personal AI assistant, set up around one person\u2019s mail, calendar and commitments. It finds what you need, keeps track of what you promised and prepares what comes next, so you stop briefing a chatbot from scratch every time.',
       crumb: allProductsCrumb,
       hero: { kind: 'image', src: stepHandoverYuriy, alt: 'Two men reflected in the polished bodywork of a car on a street', monogram: 'paper' },
       diagram: {
         summary:
-          'You choose which sources to connect. Personal Unit finds and remembers what is in them, surfaces what needs your attention and prepares replies, briefs and summaries. Nothing consequential goes out until you approve it.',
-        tag: 'Flow \u00b7 Personal Unit',
+          'You choose which sources to connect. Personal Assistant 2.0 finds and remembers what is in them, surfaces what needs your attention and prepares replies, briefs and summaries. Nothing consequential goes out until you approve it.',
+        tag: 'Flow \u00b7 Personal Assistant 2.0',
         meta: 'configured per person',
         steps: [
           { stamp: 'YOU CHOOSE', label: 'Your sources', sub: 'mail \u00b7 calendar \u00b7 contacts' },
-          { stamp: 'IN CONTEXT', label: 'Personal Unit', sub: 'finds \u00b7 remembers', accent: true },
+          { stamp: 'IN CONTEXT', label: 'Personal Assistant 2.0', sub: 'finds \u00b7 remembers', accent: true },
           { stamp: 'WHAT MATTERS', label: 'Attention', sub: 'needs you \u00b7 can wait' },
           { stamp: 'PREPARED', label: 'Drafts', sub: 'replies \u00b7 briefs' },
           { stamp: 'YOU DECIDE', label: 'Your approval', sub: 'before it goes out', dashedIn: true },
@@ -249,7 +258,7 @@ export const products: Product[] = [
         { term: 'Sources', def: 'Only the ones you choose to connect' },
         { term: 'Processing', def: 'Agreed per setup, including any external model provider' },
       ],
-      cta: { href: enquiryHref('personal-unit'), label: '\u2192 Talk about your Personal Unit' },
+      cta: { href: enquiryHref('personal-assistant'), label: '\u2192 Talk about your Personal Assistant' },
       runStepsHeading: 'What setting it up involves',
       runSteps: [
         { title: 'Map', body: 'We start from your week: which conversations, documents and routines cost you the most remembering.' },
@@ -257,8 +266,8 @@ export const products: Product[] = [
         { title: 'Check', body: 'We configure it around your work and test it on real days, not a demo, before you rely on it.' },
       ],
       limits:
-        'If you want a chatbot for the odd question, buy a subscription and save the money. Personal Unit knows what you connect and does what you approve. It is not omniscient, not a replacement for you, and not a tool for watching employees.',
-      closing: { heading: 'What are you still keeping in your head?', cta: { href: enquiryHref('personal-unit'), label: '\u2192 Talk about your Personal Unit' } },
+        'If you want a chatbot for the odd question, buy a subscription and save the money. Personal Assistant 2.0 knows what you connect and does what you approve. It is not omniscient, not a replacement for you, and not a tool for watching employees.',
+      closing: { heading: 'What are you still keeping in your head?', cta: { href: enquiryHref('personal-assistant'), label: '\u2192 Talk about your Personal Assistant' } },
     },
   },
 
